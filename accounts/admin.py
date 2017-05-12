@@ -51,13 +51,20 @@ class JobsInfoInline(admin.StackedInline):
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'created', 'updated',
-                    'id', 'bio', 'location', 'birth_date']
-    inlines = [MembershipInline, JobsInfoInline, ]
+    list_display = [
+        '__str__',
+        # 'location'
+        'created',
+        'updated',
+    ]
+    list_display_links = ["updated"]
+    list_filter = (
+        "created",
+        "updated"
+    )
+    # inlines = [MembershipInline, JobsInfoInline, ]
     search_fields = ['__str__', 'bio', 'location', 'skill', 'phone_number']
-    # list_filter = ('skill',)
-    # date_hierarchy = (,)
-    # show_full_result_count = True
+    readonly_fields = ["created", "updated"]
 
 
 # admin.site.register(User, UserProfileAdmin)

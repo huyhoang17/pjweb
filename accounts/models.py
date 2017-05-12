@@ -1,9 +1,10 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save
+from django.utils.text import slugify
 
-import datetime
 # Create your models here.
 
 
@@ -31,9 +32,9 @@ def image_upload_to(instance, filename):
 
 class UserProfile(TimeStamp):
     user = models.OneToOneField(
-        User, related_name='accounts', on_delete=models.CASCADE)
+        User, on_delete=models.CASCADE)
     # company = models.ForeignKey(CompanyProfile, blank=True, null=True)
-
+    slug = models.SlugField(blank=True)
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
@@ -41,7 +42,7 @@ class UserProfile(TimeStamp):
         regex=r'^\+?1?\d{9,15}$',
         message="""
             Phone number must be entered in the format: '+999999999'. \
-            Up to 15 digits allowed.
+            Up to 15 digits allowed. 
         """
     )
     skill = models.TextField(blank=True, null=True, max_length=250)
@@ -63,13 +64,31 @@ class UserProfile(TimeStamp):
     def __str__(self):
         return self.user.username
 
+    def get_absolute_url(self):
+        return reverse("detail_accounts",
+                       kwargs={"pk": self.pk, "slug": self.slug})
+
     class Meta:
-        verbose_name = 'Detail User Profile'
-        verbose_name_plural = 'Users'
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+        ordering = ["-id"]
 
 
-# def cart_item_post_save_receiver(sender, instance, *args, **kwargs):
-#     pass
+def create_slug(instance, new_slug=None):
+    slug = slugify(instance.user.username)
+    if new_slug is not None:
+        slug = new_slug
+    qs = UserProfile.objects.filter(slug=slug).order_by("-id")
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, qs.first().id)
+        return create_slug(instance, new_slug=new_slug)
+    return slug
 
 
-# post_save.connect(cart_item_post_save_receiver, sender=UserProfile)
+def pre_save_job_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_slug(instance)
+
+
+pre_save.connect(pre_save_job_receiver, sender=UserProfile)
