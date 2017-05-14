@@ -22,13 +22,27 @@ class MembershipAdmin(admin.ModelAdmin):
 
 
 class CompanyProfileAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'created',
-                    'updated', 'id', 'name', 'city', 'country']
+    list_display = [
+        'name',
+        'city',
+        'created',
+        'updated',
+    ]
+    list_filter = (
+        "created",
+        "updated"
+    )
     inlines = [MembershipInline, JobsInfoInline, ]
-    search_fields = ['name', 'address', 'city', 'website', 'size', ]
+    search_fields = [
+        'name',
+        'address',
+        'city',
+        'website'
+    ]
+    readonly_fields = ["created", "updated"]
 
-    # class Meta:
-    #     model = CompanyProfile
+    class Meta:
+        model = CompanyProfile
 
 
 admin.site.register(CompanyProfile, CompanyProfileAdmin)
