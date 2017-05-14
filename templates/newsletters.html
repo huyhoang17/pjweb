@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+<style>
+{% block style %}
+
+{% endblock style %}
+</style>
+
+{% block header %}
+{% endblock header %}
+
+{% if message %}
+<h3 class="lead text-center">{{ message }}</h3>
+{% endif %}
+
+{% block content %}
+<h3 class="lead text-center">Subcribe Newsletter</h3>
+	<div class='row'>
+		<div class='col-sm-8 col-sm-offset-2'>
+			<form method='POST' action=''>{% csrf_token %}
+				{{ form|crispy }}
+				<div class="submit text-center">
+				<input class='btn btn-primary' type='submit' value='Submit' />
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock content %}

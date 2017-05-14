@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+<style>
+{% block style %}
+.img-responsive {
+	border-radius: 50%;
+	border: 2px solid #555;
+}
+{% endblock style %}
+</style>
+
+{% block header %}
+{% endblock header %}
+{% block content %}
+<h3>Account Detail</h3>
+<br>
+{% if request.user.is_authenticated %}
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="col-sm-4  text-center">
+					<a class="lead" href="{{ accounts_detail.get_absolute_url }}">{{ accounts_detail.user.username }}</a>
+					<br><br>
+					<img class="img-responsive" src="http://127.0.0.1:8000/media/user/testuser25/testuser25-None.jpg" alt="">
+					<br>
+					<a href="{{ accounts_detail.cv_user }}"><button class="btn btn-info btn-sm">View CV</button></a>
+				</div>
+				<div class="col-sm-8">
+					<p><b>Location</b>: {{ accounts_detail.location }}</p>
+					<p><b>Bio</b>: {{ accounts_detail.bio }}</p>
+					<p><b>Birth Date</b>: {{ accounts_detail.birth_date }}</p>
+					<p><b>Phone Number</b>: {{ accounts_detail.phone_number }}</p>
+					<p><b>Skills</b>: {{ accounts_detail.skill }}</p>
+					
+				</div>
+				<hr>
+			</div>
+			<div class="row col-sm-4">
+				<h3>Authenticated</h3>
+			</div>
+		</div>
+	</div>
+{% else %}
+	<p class="lead text-center">
+		You must be <a href="{% url 'auth_login' %}">login</a> or <a href="{% url 'registration_register' %}">register</a> account to see this
+	</p>
+{% endif %}
+{% endblock content %}

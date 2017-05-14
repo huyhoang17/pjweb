@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+<style>
+{% block style %}
+.jumbotron {
+	background: url(http://blog.efpsa.org/wp-content/uploads/2016/07/python-programming-in-psychology-analysis-data-expyriment.jpg) no-repeat center center fixed;
+	background-size: cover;
+	height: 650px;
+}
+.main-text {
+	color: #fff;
+	/*text-shadow: 0.1px 0.1px 0.1px #555;*/
+	text-align: center;
+	margin-top: 150px;
+}
+.main-content {
+	margin: 0px;
+}
+#item {
+border: 1px solid #e1e1e1;
+padding: 30px;
+}
+{% endblock style %}
+</style>
+{% block header %}
+{% endblock header %}
+{% block content %}
+	<div id="main-content" class="jumbotron text-center">
+		<div class="main-text">
+			<form class="form-horizontal col-sm-6 col-sm-offset-3">
+				<h3 style="font-size: 50px;" class="lead text-center">Remote Python Jobs</h3>
+				<div class="form-group">
+					<div class="">
+						<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="">
+						<button type="submit" class="btn btn-primary btn-lg">Find Remote Python Jobs</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<br><br>
+	</div>
+	<h3 class="lead text-center"><b>Remote Python Jobs</b></h3>
+	<div class="container">
+		<div class="row col-sm-12">
+			{% for job in jobs_list %}
+				<div id="item">
+					<div class="row">
+						<a href="{{ job.get_absolute_url }}">{{ job.name }}</a>
+						- {{ job.company }}
+						<p>{{ job.description | truncatewords:30 }}</p>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<br>
+	<div class="text-center">
+		<a href="{% url 'jobs' %}">See all python jobs</a>
+	</div
+	<hr>
+{% endblock content %}

@@ -1,0 +1,28 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-8">
+			{% for account in accounts_list %}
+				<div id="item">
+					<div class="row">
+						<div class="col-sm-4">
+							<a class="lead" href="{{ account.get_absolute_url }}">{{ account.user.username }}</a>
+							<br>
+							<img class="img-responsive" src="http://127.0.0.1:8000/media/user/testuser25/testuser25-None.jpg" alt="">
+						</div>
+						<div class="col-sm-8">
+							<p><b>Location</b>: {{ account.location }}</p>
+							<p><b>Bio</b>: {{ account.bio|truncatewords:15 }}</p>
+							<p><b>Birth Date</b>: {{ account.birth_date }}</p>
+							<p><b>Phone Number</b>: {{ account.phone_number }}</p>
+							<p><b>Skills</b>: {{ account.skill }}</p>
+						</div>
+					</div>
+				</div>
+				<hr>
+			{% endfor %}
+		</div>
+		<div class="row col-sm-4">
+			<h3>Authenticated</h3>
+		</div>
+	</div>
+</div>

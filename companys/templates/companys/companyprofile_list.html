@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+<style>
+{% block style %}
+img.img-responsive {
+	max-width: 50%;
+}
+
+#current_companies {
+	color: #777;
+	margin: 0px 10px;
+}
+{% endblock style %}
+</style>
+{% block header %}
+{% endblock header %}
+{% block content %}
+<h3>Company List</h3>
+<br>
+{% if request.user.is_authenticated %}
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-8">
+				{% for company in companys_list %}
+					<div id="item">
+						<div class="row">
+							<div class="col-sm-4">
+								<a class="lead" href="{{ company.get_absolute_url }}">{{ company.name }}</a>
+								<br>
+								<!-- <img class="img-responsive" src="{{ company.logo }}" alt=""> -->
+							</div>
+							<div class="col-sm-8">
+								<p><b>Location</b>: {{ company.city }} - {{ company.country }}</p>
+								<p><b>Description</b>: {{ company.description|truncatewords:30 }}</p>
+								<p><b>Website</b>: {{ company.website }}</p>
+								<p><b>Phone Number</b>: {{ company.phone_number }}</p>
+								<p><b>Size</b>: {{ company.Size }}</p>
+								<p><b>Email Contact</b>: {{ company.email_contact }}</p>
+							</div>
+						</div>
+					</div>
+					<hr>
+				{% endfor %}
+			</div>
+			<div class="row col-sm-4">
+			</div>
+		</div>
+	</div>
+	<div class="pagination">
+		<span class="step-links">
+			{% if page_obj.has_previous %}
+				<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+			{% endif %}
+			<span id="current_companies" class="current">
+				Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+			</span>
+			{% if page_obj.has_next %}
+				<a href="?page={{ page_obj.next_page_number }}">next</a>
+			{% endif %}
+		</span>
+	</div>
+{% else %}
+	<p class="lead text-center">
+		You must be <a href="{% url 'auth_login' %}">login</a> or <a href="{% url 'registration_register' %}">register</a> account to see this
+	</p>
+{% endif %}
+{% endblock content %}
