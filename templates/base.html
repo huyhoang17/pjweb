@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% block header %}
+			<meta charset="UTF-8">
+			<title>PyWeb</title>
+		{% endblock header %}
+		
+		<style>
+		{% block style %}
+		.main {
+			margin-top: 100px;
+		}
+		{% endblock style %}
+		</style>
+	</head>
+	<body>
+
+		{% include 'navbar.html' %}
+		<div class="main">
+		{% block content %}
+		{% endblock content %}
+		</div>
+		
+		<footer class="main-footer">
+		{% include "footer.html" %}
+		</footer>
+		{% include "bootstrap.html" %}
+	</body>
+</html>
