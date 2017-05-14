@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 <style>
 {% block style %}
+.main {
+	margin-top: 100px;
+}
 img.img-responsive {
 	max-width: 50%;
 }
@@ -9,10 +12,9 @@ img.img-responsive {
 {% block header %}
 {% endblock header %}
 {% block content %}
-<h3>Account List</h3>
-<br>
+<h3 class="lead text-center">Account List</h3>
 {% if request.user.is_authenticated %}
-<div class="container">
+<div class="main container">
 	<div class="row">
 		<div class="col-sm-8">
 			{% for account in accounts_list %}

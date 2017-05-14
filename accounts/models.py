@@ -2,8 +2,10 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, pre_init, post_init
 from django.utils.text import slugify
+
+from registration.models import RegistrationProfile
 
 # Create your models here.
 
@@ -71,7 +73,7 @@ class UserProfile(TimeStamp):
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
-        ordering = ["-id"]
+        ordering = ["-updated", "-id"]
 
 
 def create_slug(instance, new_slug=None):
@@ -87,8 +89,22 @@ def create_slug(instance, new_slug=None):
 
 
 def pre_save_job_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug:
+    if not instance.slug or instance.slug == "None":
         instance.slug = create_slug(instance)
 
 
 pre_save.connect(pre_save_job_receiver, sender=UserProfile)
+
+
+def register_user_account(sender, instance, *args, **kwargs):
+    username = instance.user.username
+    user = User.objects.get(username=username)
+    user_acc = UserProfile.objects.filter(user=user).first()
+    if not user_acc and instance.activated is True:
+        user.is_active = True
+        user_profile = UserProfile(user=user)
+        user_profile.save()
+        user.save()
+
+
+pre_save.connect(register_user_account, sender=RegistrationProfile)
