@@ -6,6 +6,7 @@ pjweb/__pycache__
 pjweb/settings/__pycache__
 data
 static_in_env
+services
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
