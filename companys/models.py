@@ -104,6 +104,15 @@ def create_slug_company_none(sender, instance, *args, **kwargs):
     '''
     if not instance.slug:
         instance.slug = create_slug(instance)
+    # if not instance.description:
+    #     instance.description = """
+    #     Lorem ipsum dolor sit amet, consectetur adipisicing elit. \
+    #     Necessitatibus corrupti accusantium odio iusto expedita explicabo \
+    #     temporibus autem cupiditate dolores molestiae nam eligendi velit, \
+    #     sit quod eius facere labore adipisci excepturi porro? Recusandae \
+    #     dignissimos laboriosam culpa distinctio dolorem libero, maxime nobis.
+    #     """
+    # instance.save()
 
 
 post_init.connect(create_slug_company_none, sender=CompanyProfile)
