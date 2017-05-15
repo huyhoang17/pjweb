@@ -41,7 +41,9 @@ img.img-responsive {
 			<h3>Search Location</h3>
 		</div>
 	</div>
+	{% include "pagination.html" %}
 </div>
+
 {% else %}
 	<p class="lead text-center">
 		You must be <a href="{% url 'auth_login' %}">login</a> or <a href="{% url 'registration_register' %}">register</a> account to see this

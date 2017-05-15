@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 <style>
 {% block style %}
-img.img-responsive {
-	max-width: 50%;
-}
-
-#current_companies {
-	color: #777;
-	margin: 0px 10px;
-}
+	img.img-responsive {
+		max-width: 50%;
+	}
+	#current_companies {
+		color: #777;
+		margin: 0px 10px;
+	}
 {% endblock style %}
 </style>
 {% block header %}
@@ -45,19 +44,7 @@ img.img-responsive {
 			</div>
 		</div>
 	</div>
-	<div class="pagination">
-		<span class="step-links">
-			{% if page_obj.has_previous %}
-				<a href="?page={{ page_obj.previous_page_number }}">previous</a>
-			{% endif %}
-			<span id="current_companies" class="current">
-				Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-			</span>
-			{% if page_obj.has_next %}
-				<a href="?page={{ page_obj.next_page_number }}">next</a>
-			{% endif %}
-		</span>
-	</div>
+	{% include "pagination.html" %}
 {% else %}
 	<p class="lead text-center">
 		You must be <a href="{% url 'auth_login' %}">login</a> or <a href="{% url 'registration_register' %}">register</a> account to see this
