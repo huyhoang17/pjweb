@@ -20,6 +20,10 @@
 border: 1px solid #e1e1e1;
 padding: 30px;
 }
+button.btn-primary {
+	background: #303F9F;
+	border: none;
+}
 {% endblock style %}
 </style>
 {% block header %}
@@ -31,12 +35,12 @@ padding: 30px;
 				<h3 style="font-size: 50px;" class="lead text-center">Remote Python Jobs</h3>
 				<div class="form-group">
 					<div class="">
-						<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+						<input type="text" name="q" class="form-control text-center" id="inputEmail3" placeholder="Find Jobs">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="">
-						<button type="submit" class="btn btn-primary btn-lg">Find Remote Python Jobs</button>
+						<button type="submit" value="Search" class="btn btn-primary btn-lg">Find Remote Python Jobs</button>
 					</div>
 				</div>
 			</form>
@@ -59,7 +63,25 @@ padding: 30px;
 	</div>
 	<br>
 	<div class="text-center">
-		<a href="{% url 'jobs' %}">See all python jobs</a>
-	</div
-	<hr>
+		<a class="lead" href="{% url 'jobs' %}">See all python jobs</a>
+	</div>
+	<br>
+	<h3 class="lead text-center"><b>Companies</b></h3>
+	<div class="container">
+		<div class="row col-sm-12">
+			{% for company in companys_list %}
+				<div id="item">
+					<div class="row">
+						<a href="{{ company.get_absolute_url }}">{{ company.name }}</a>
+						- {{ company.address }}
+						<p>{{ company.description | truncatewords:30 }}</p>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<br>
+	<div class="text-center">
+		<a class="lead" href="{% url 'companies' %}">See all companies</a>
+	</div>
 {% endblock content %}
