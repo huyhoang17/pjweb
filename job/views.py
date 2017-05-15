@@ -2,13 +2,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.views.generic import DetailView, DeleteView, ListView
-from django.views.generic.edit import CreateView, FormView
-from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic.edit import CreateView
 
 from .models import JobsInfo
-from .mixins import StaffRequiredMixin
 from .forms import JobCreateForm
+from companys.models import CompanyProfile
 from companys.mixins import CompanyRequiredMixin
+from accounts.mixins import StaffRequiredMixin
 # Create your views here.
 
 
@@ -39,9 +39,18 @@ class JobDetailView(DetailView):
     model = JobsInfo
     context_object_name = "jobs_detail"
 
+    def get_object(self, *args, **kwargs):
+        print(dir(self.request.user))
+        return super().get_object(*args, **kwargs)
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        # context["company_info"] = CompanyProfile.objects.all().first()
         return context
+
+    # def render_to_response(self, context, *args, **kwargs):
+    #     context = self.get_context_data()
+    #     return super().render_to_response(context, *args, **kwargs)
 
 
 class JobCreateView(LoginRequiredMixin, CompanyRequiredMixin, CreateView):

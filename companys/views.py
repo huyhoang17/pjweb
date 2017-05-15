@@ -1,13 +1,16 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
-from django.views.generic import DetailView, DeleteView, ListView
-from django.views.generic.edit import CreateView, FormView
+from django.shortcuts import redirect
+from django.views.generic import (
+    DetailView, DeleteView, ListView
+)
+from django.views.generic.edit import CreateView
+from django.urls import reverse
 
 from .models import CompanyProfile, Membership
-from .mixins import CompanyRequiredMixin
 from .forms import CompanyCreateForm
 from accounts.models import UserProfile
+from accounts.mixins import StaffRequiredMixin
 # Create your views here.
 
 
@@ -66,5 +69,8 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.success_url)
 
 
-class CompanyDeleteView(DeleteView):
-    pass
+class CompanyDeleteView(StaffRequiredMixin, DeleteView):
+    model = CompanyProfile
+
+    def get_success_url(self):
+        return reverse("companies")
