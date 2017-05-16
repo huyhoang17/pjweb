@@ -6,7 +6,6 @@ from django.views.generic.edit import CreateView
 
 from .models import JobsInfo
 from .forms import JobCreateForm
-from companys.models import CompanyProfile
 from companys.mixins import CompanyRequiredMixin
 from accounts.mixins import StaffRequiredMixin
 # Create your views here.

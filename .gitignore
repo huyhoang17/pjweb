@@ -1,3 +1,4 @@
+Makefile
 venv
 db.sqlite3
 .env

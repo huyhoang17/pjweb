@@ -1,6 +1,3 @@
-# from .utils import list_province_data
-
-
 SIZE_COMPANY = (
     ('< 10', '< 10'),
     ('10 - 25', '10 - 25'),

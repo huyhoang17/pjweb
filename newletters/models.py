@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 
-class SignUp(models.Model):
+class Newsletters(models.Model):
     email = models.EmailField()
     full_name = models.CharField(max_length=100, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -13,5 +13,5 @@ class SignUp(models.Model):
         return self.email
 
     class Meta:
-        verbose_name = 'Detail Sign Up'
-        verbose_name_plural = 'SignUps'
+        verbose_name = 'Newsletter'
+        verbose_name_plural = 'Newsletters'

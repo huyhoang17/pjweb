@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from django.db.models.signals import pre_save, pre_init, post_init
+from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
 from registration.models import RegistrationProfile
@@ -44,7 +44,7 @@ class UserProfile(TimeStamp):
         regex=r'^\+?1?\d{9,15}$',
         message="""
             Phone number must be entered in the format: '+999999999'. \
-            Up to 15 digits allowed. 
+            Up to 15 digits allowed.
         """
     )
     skill = models.TextField(blank=True, null=True, max_length=250)

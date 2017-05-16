@@ -1,7 +1,7 @@
-from .base import *
+# from .base import *
 
 
-print('LOCAL settings')
+# print('LOCAL settings')
 
 # add INTERNAL_IPS settings to use with django-debug-toolbar
 # http://www.bedjango.com/blog/how-install-django-debug-toolbar/

@@ -1,13 +1,14 @@
 from django.contrib.auth.models import User
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from accounts.models import UserProfile
 from companys.models import CompanyProfile
 from job.models import JobsInfo
 
 import glob
-import json
 import logging
+import json
+
 logger = logging.getLogger(__name__)
 
 

@@ -1,10 +1,9 @@
-from django.conf import settings
-from django.conf.urls import include, url
-from django.conf.urls.static import static
-# from django.contrib import admin
+from django.conf.urls import url
+from django.db import models
 
-
-from .views import JobListView, JobDetailView, JobCreateView, JobDeleteView
+from .views import (
+    JobListView, JobDetailView, JobCreateView, JobDeleteView
+)
 
 urlpatterns = [
     url(r'^$', JobListView.as_view(), name='jobs'),

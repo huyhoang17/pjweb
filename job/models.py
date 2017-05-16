@@ -4,7 +4,7 @@ from django.db.models.signals import pre_save
 from django.utils.text import slugify
 # from django.conf import settings
 
-from .consts import WAGES, JOB_TYPES
+from .consts import JOB_TYPES
 from companys.models import CompanyProfile
 from accounts.models import UserProfile
 # Create your models here.
@@ -60,7 +60,10 @@ class JobsInfo(JobsTimeStamp):
         return "\n".join(s)
 
     def get_absolute_url(self):
-        return reverse("detail_jobs", kwargs={"pk": self.pk, "slug": self.slug})
+        return reverse(
+            "detail_jobs",
+            kwargs={"pk": self.pk, "slug": self.slug}
+        )
 
     class Meta:
         verbose_name = 'Job'

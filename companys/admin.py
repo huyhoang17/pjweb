@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from .models import CompanyProfile, Membership
 from job.models import JobsInfo
-# Register your models here.
 
 
 class MembershipInline(admin.StackedInline):

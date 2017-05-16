@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models.signals import pre_save, post_init
 from django.utils.text import slugify
 
-from .consts import SIZE_COMPANY, CITY
 from accounts.models import UserProfile
 # Create your models here.
 

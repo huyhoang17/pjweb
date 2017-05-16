@@ -1,11 +1,11 @@
 from django.contrib import admin
 
-from .models import SignUp
+from .models import Newsletters
 # Register your models here.
 
 
-class SignUpAdmin(admin.ModelAdmin):
+class NewsletterAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'id', 'full_name', 'created', 'updated']
 
 
-admin.site.register(SignUp, SignUpAdmin)
+admin.site.register(Newsletters, NewsletterAdmin)

@@ -7,10 +7,7 @@ from django.views.generic import (
     DeleteView,
     ListView,
     UpdateView,
-    TemplateView
 )
-
-from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import redirect
 
 from .models import UserProfile
