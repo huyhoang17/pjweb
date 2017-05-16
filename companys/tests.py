@@ -1,3 +1,7 @@
 from django.test import TestCase
 
-# Create your tests here.
+
+class TruthTests(TestCase):
+
+    def test_a_truth(self):
+        self.assertTrue(1 + 1 == 2)
