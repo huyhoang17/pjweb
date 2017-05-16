@@ -1,4 +1,7 @@
 # pjweb
+
+[![CircleCI](https://circleci.com/gh/pymivn/pjweb.svg?style=svg)](https://circleci.com/gh/pymivn/pjweb)
+
 Python jobs website
 
 ---
