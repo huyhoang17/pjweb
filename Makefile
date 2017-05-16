@@ -20,3 +20,10 @@ service:
 shell:
 	python manage.py shell -i ipython
 
+test:
+	python manage.py test
+
+lint:
+	flake8 --exclude migrations/,env/ .
+
+ci: lint test
