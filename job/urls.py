@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from django.db import models
 
 from .views import (
     JobListView, JobDetailView, JobCreateView, JobDeleteView
