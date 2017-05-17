@@ -77,7 +77,7 @@ class ContactView(TemplateView):
                     from_email,
                     [settings.EMAIL_HOST_USER]
                 )
-            except Exception:
+            except BadHeaderError:
                 return HttpResponse('Invalid header found.')
 
             context = {

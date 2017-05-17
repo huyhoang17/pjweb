@@ -1,36 +1,39 @@
 {% extends "base.html" %}
 <style>
 {% block style %}
-.container {
-	background: fixed;
-}
+	.main {
+		margin-top: 100px;
+	}
 {% endblock style %}
 </style>
 {% block header %}
 {% endblock header %}
 {% block content %}
-<br>
-{% if request.user.is_authenticated %}
-<div class="container">
-<div class="row">
-<div class="col-sm-4 text-center">
-	<img src="{{ companys_detail.logo }}" alt="" class="img-responsive">
-	<br>
-	<p>{{ companys_detail.name }}</p>
+<div class="main">
+	{% if request.user.is_authenticated %}
+		<h3 class="lead text-center">Detail Company Info</h3>
+		<br>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 text-center">
+					<img src="{{ companys_detail.logo }}" alt="" class="img-responsive">
+					<br>
+					<p>{{ companys_detail.name }}</p>
+				</div>
+				<div class="col-sm-8">
+					<p><b>Description</b>: {{ companys_detail.description }}</p>
+					<p><b>Location</b>: {{ companys_detail.city }} - {{ companys_detail.country }}</p>
+					<p><b>Website</b>: {{ companys_detail.website }}</p>
+					<p><b>Phone Number</b>: {{ companys_detail.phone_number }}</p>
+					<p><b>Size</b>: {{ companys_detail.size }}</p>
+					<p><b>Email Contact</b>: {{ companys_detail.email_contact }}</p>
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<p class="lead text-center">
+			You must be <a href="{% url 'auth_login' %}">login</a> or <a href="{% url 'registration_register' %}">register</a> account to see this
+		</p>
+	{% endif %}
 </div>
-<div class="col-sm-8">
-	<p><b>Description</b>: {{ companys_detail.description }}</p>
-	<p><b>Location</b>: {{ companys_detail.city }} - {{ companys_detail.country }}</p>
-	<p><b>Website</b>: {{ companys_detail.website }}</p>
-	<p><b>Phone Number</b>: {{ companys_detail.phone_number }}</p>
-	<p><b>Size</b>: {{ companys_detail.size }}</p>
-	<p><b>Email Contact</b>: {{ companys_detail.email_contact }}</p>
-</div>
-</div>
-</div>
-{% else %}
-	<p class="lead text-center">
-		You must be <a href="{% url 'auth_login' %}">login</a> or <a href="{% url 'registration_register' %}">register</a> account to see this
-	</p>
-{% endif %}
 {% endblock content %}
