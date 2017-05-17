@@ -56,7 +56,7 @@ class JobsInfo(JobsTimeStamp):
 
     @property
     def get_raw_string(self):
-        s = self.description.split('|')
+        s = self.description.repace('|', '.')
         return "\n".join(s)
 
     def get_absolute_url(self):

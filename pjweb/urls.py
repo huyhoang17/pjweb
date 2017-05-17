@@ -3,10 +3,13 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from newletters.views import HomeView, NewslettersView
+from newletters.views import (
+    ContactView, HomeView, NewslettersView
+)
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name="home"),
+    url(r'^contact/$', ContactView.as_view(), name="contact"),
     url(r'^newsletter/$', NewslettersView.as_view(), name="newsletters"),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.default.urls')),

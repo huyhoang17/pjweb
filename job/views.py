@@ -8,7 +8,6 @@ from .models import JobsInfo
 from .forms import JobCreateForm
 from companys.mixins import CompanyRequiredMixin
 from accounts.mixins import StaffRequiredMixin
-# Create your views here.
 
 
 class JobListView(ListView):
@@ -25,9 +24,9 @@ class JobListView(ListView):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get("q")
         if query:
+            query = query.strip()
             qs = self.model.objects.filter(
                 Q(name__icontains=query) |
-                # Q(company_set__icontains=query) |
                 Q(description__icontains=query) |
                 Q(experience__icontains=query)
             )
@@ -39,17 +38,12 @@ class JobDetailView(DetailView):
     context_object_name = "jobs_detail"
 
     def get_object(self, *args, **kwargs):
-        print(dir(self.request.user))
         return super().get_object(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         # context["company_info"] = CompanyProfile.objects.all().first()
         return context
-
-    # def render_to_response(self, context, *args, **kwargs):
-    #     context = self.get_context_data()
-    #     return super().render_to_response(context, *args, **kwargs)
 
 
 class JobCreateView(LoginRequiredMixin, CompanyRequiredMixin, CreateView):
