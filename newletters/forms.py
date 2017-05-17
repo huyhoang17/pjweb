@@ -4,9 +4,10 @@ from .models import Newsletters
 
 
 class ContactForm(forms.Form):
-    full_name = forms.CharField(required=False)
-    email = forms.EmailField()
-    message = forms.CharField()
+    subject = forms.CharField(required=True)
+    full_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    message = forms.CharField(required=True)
 
 
 class NewslettersForm(forms.ModelForm):
