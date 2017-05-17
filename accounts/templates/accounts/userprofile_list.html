@@ -4,26 +4,31 @@
 .main {
 	margin-top: 100px;
 }
+#item {
+	border: 1px solid #e1e1e1;
+	padding: 30px;
+}
 img.img-responsive {
-	max-width: 50%;
+	max-width: 100%;
 }
 {% endblock style %}
 </style>
 {% block header %}
 {% endblock header %}
 {% block content %}
-<h3 class="lead text-center">Account List</h3>
 {% if request.user.is_authenticated %}
 <div class="main container">
+<h3 class="text-center lead">Remote Python Developers</h3>
+	<br>
 	<div class="row">
-		<div class="col-sm-8">
+		<div class="col-sm-7">
 			{% for account in accounts_list %}
 				<div id="item">
 					<div class="row">
-						<div class="col-sm-4">
-							<a class="lead" href="{{ account.get_absolute_url }}">{{ account.user.username }}</a>
+						<div class="col-sm-4 text-center">
+							<img class="img-responsive" src="http://placehold.it/250x250" alt="">
 							<br>
-							<img class="img-responsive" src="http://127.0.0.1:8000/media/user/testuser25/testuser25-None.jpg" alt="">
+							<a class="lead" href="{{ account.get_absolute_url }}">{{ account.user.username }}</a>
 						</div>
 						<div class="col-sm-8">
 							<p><b>Location</b>: {{ account.location }}</p>
@@ -37,8 +42,8 @@ img.img-responsive {
 				<hr>
 			{% endfor %}
 		</div>
-		<div class="row col-sm-4">
-			<h3>Search Location</h3>
+		<div class="row col-sm-5">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores consequuntur, esse nemo neque inventore quasi iure quos, ullam, quas minima unde dicta. Illum voluptate excepturi, officia atque adipisci dolorem? Provident?
 		</div>
 	</div>
 	{% include "pagination.html" %}
