@@ -14,19 +14,20 @@
   }
 {% endblock style %}
 </style>
-
-<nav id="navbar" class="navbar navbar-default main-navbar hidden-sm hidden-xs navbar-fixed-top">
+<nav id="navbar" class="navbar navbar-toggleable-md navbar-default main-navbar hidden-sm hidden-xs navbar-fixed-top">
+  <!-- <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button> -->
   <div class="container">
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      
+    <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="nav navbar-nav">
-        <li id="logo-text"><a href="/jobs" class="nav navbar-brand"><a href="{% url 'home' %}"><strong>PJWEB</strong></a></li>
-        <li><a href="{% url "jobs" %}"><strong>Find Jobs</strong></a></li>
-        <li><a href="{% url "accounts" %}"><strong>Find Devs</strong></a></li>
-        <li><a href="{% url 'create_jobs' %}"><strong>Post a Job</strong></a></li>
-        <li><a href="{% url 'newsletters' %}"><strong>Job Alerts</strong></a></li>
-        <li><a href="https://pymi-slack.herokuapp.com/"><strong>Slack</strong></a></li>
-        <li><a href="#"><strong>Contact Us</strong></a></li>
+        <a id="logo-text"><a href="{% url 'home' %}" class="nav navbar-brand" ><strong>PJWEB</strong></a>
+        <li class="nav-item"><a href="{% url "jobs" %}"><strong>Find Jobs</strong></a></li>
+        <li class="nav-item"><a href="{% url "accounts" %}"><strong>Find Devs</strong></a></li>
+        <li class="nav-item"><a href="{% url 'create_jobs' %}"><strong>Post a Job</strong></a></li>
+        <li class="nav-item"><a href="{% url 'newsletters' %}"><strong>Job Alerts</strong></a></li>
+        <li class="nav-item"><a href="https://pymi-slack.herokuapp.com/"><strong>Slack</strong></a></li>
+        <li class="nav-item"><a href="{% url 'contact' %}"><strong>Contact Us</strong></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -43,8 +44,8 @@
           <!-- end dropdown account -->
           <!-- <li class="link-btn"><a href="{% url 'auth_logout' %}"><span class="btn btn-theme btn-pill btn-xs btn-line">Log Out</span></a></li> -->
         {% else %}
-          <li class="link-btn"><a href="{% url 'auth_login' %}"><span class="btn btn-theme btn-pill btn-xs btn-line">Log In</span></a></li>
-          <li class="link-btn"><a href="{% url 'registration_register' %}"><span class="btn btn-theme  btn-pill btn-xs btn-line">Sign Up</span></a></li>
+          <li class="nav-item link-btn"><a class="nav-link" href="{% url 'auth_login' %}"><span class="btn btn-theme btn-pill btn-xs btn-line">Log In</span></a></li>
+          <li class="nav-item link-btn"><a class="nav-link" href="{% url 'registration_register' %}"><span class="btn btn-theme  btn-pill btn-xs btn-line">Sign Up</span></a></li>
         {% endif %}
       </ul>
     </div>

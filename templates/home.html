@@ -9,7 +9,6 @@
 }
 .main-text {
 	color: #fff;
-	/*text-shadow: 0.1px 0.1px 0.1px #555;*/
 	text-align: center;
 	margin-top: 150px;
 }
@@ -30,7 +29,7 @@ button.btn-primary {
 {% endblock header %}
 {% block content %}
 	<div id="main-content" class="jumbotron text-center">
-		<div class="main-text">
+		<div id="main-text" class="main-text">
 			<form class="form-horizontal col-sm-6 col-sm-offset-3">
 				<h3 style="font-size: 50px;" class="lead text-center">Remote Python Jobs</h3>
 				<div class="form-group">
@@ -84,4 +83,7 @@ button.btn-primary {
 	<div class="text-center">
 		<a class="lead" href="{% url 'companies' %}">See all companies</a>
 	</div>
+	
+	<hr>
+	{% include "jumbotron2.html" %}
 {% endblock content %}
