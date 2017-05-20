@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load jobs_info %}
 <style>
 {% block style %}
 .jumbotron {
@@ -27,9 +28,10 @@ button.btn-primary {
 </style>
 {% block header %}
 {% endblock header %}
+
 {% block content %}
 	<div id="main-content" class="jumbotron text-center">
-		<div id="main-text" class="main-text">
+		<div id="main-text" class="main-text container">
 			<form class="form-horizontal col-sm-6 col-sm-offset-3">
 				<h3 style="font-size: 50px;" class="lead text-center">Remote Python Jobs</h3>
 				<div class="form-group">
@@ -41,7 +43,7 @@ button.btn-primary {
 					<div class="">
 						<button type="submit" value="Search" class="btn btn-primary btn-lg">Find Remote Python Jobs</button>
 					</div>
-				</div>
+				</div>			
 			</form>
 		</div>
 		<br><br>
@@ -54,7 +56,7 @@ button.btn-primary {
 					<div class="row">
 						<a href="{{ job.get_absolute_url }}">{{ job.name }}</a>
 						- {{ job.company }}
-						<p>{{ job.description | truncatewords:30 }}</p>
+						<p>{{ job.description | convert_to_html | safe | truncatewords:25 }}</p>
 					</div>
 				</div>
 			{% endfor %}
@@ -72,7 +74,7 @@ button.btn-primary {
 				<div id="item">
 					<div class="row">
 						<a href="{{ company.get_absolute_url }}">{{ company.name }}</a>
-						- {{ company.address }}
+						- {{ company.address | html_inline | safe }}
 						<p>{{ company.description | truncatewords:30 }}</p>
 					</div>
 				</div>

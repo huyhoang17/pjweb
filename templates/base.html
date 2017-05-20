@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		{% block header %}
-			<meta charset="UTF-8">
+			<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 			<title>PyWeb</title>
 		{% endblock header %}
 		
@@ -18,14 +18,14 @@
 	<body>
 
 		{% include 'navbar.html' %}
+
 		<div class="main">
 		{% block content %}
 		{% endblock content %}
 		</div>
 		
-		<footer class="main-footer">
 		{% include "footer.html" %}
-		</footer>
-		{% include "bootstrap.html" %}
+
+		{% include "javascript_cdn.html" %}
 	</body>
 </html>
