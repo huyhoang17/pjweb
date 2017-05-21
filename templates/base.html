@@ -6,11 +6,11 @@
 			<title>PyWeb</title>
 		{% endblock header %}
 		
+		{% include 'head_css.html' %}
+
 		<style>
 		{% block style %}
-		.main {
-			margin-top: 100px;
-		}
+
 		{% endblock style %}
 		</style>
 		{% include "css_cdn.html" %}
@@ -19,7 +19,7 @@
 
 		{% include 'navbar.html' %}
 
-		<div class="main">
+		<div class="main-content">
 		{% block content %}
 		{% endblock content %}
 		</div>

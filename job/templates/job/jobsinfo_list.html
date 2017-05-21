@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% load jobs_info %}
 
 <style>
@@ -42,8 +41,7 @@
 						<a href="{{ job.get_absolute_url }}">{{ job.name }}</a>
 						- {{ job.company }}
 						<hr>
-						<p>{{ job.description | truncatewords:50 }}</p>
-						<p>{{ job.description | dot_replace }}</p>
+						<p>{{ job.description | convert_to_html | safe |truncatewords:50 }}</p>
 					</div>
 				</div>
 				<hr>
@@ -54,5 +52,4 @@
 		</div>
 	</div>
 	{% include "pagination.html" %}
-</div>
 {% endblock content %}

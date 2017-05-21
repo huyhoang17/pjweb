@@ -1,25 +1,39 @@
 {% extends "base.html" %}
+{% load jobs_info %}
 <style>
-		{% block style %}
-		.list-unstyled a {
-			color: #34495e;
-			border-color: #34495e;
-			border-width: 2px;
-		}
+{% block style %}
+.main {
+	margin-top: 100px;
+}
+.list-unstyled a {
+	color: #34495e;
+	border-color: #34495e;
+	border-width: 2px;
+}
 {% endblock style %}
 </style>
 {% block content %}
-	<h3 class="text-center lead">Detail Job</h3>
-	<hr>
+<div class="main">
 	<div class="container">
 		<div class="row">
-
-			<h3 class="lead">{{ jobs_detail.name }}</h3>
-			<h3 class="lead text-center">{{ company_info.city }}</h3>
+			<h3 class="lead"><b>{{ jobs_detail.name }}</b></h3>
+			<p>{{ jobs_detail.company.address | html_inline | safe }} - {{ jobs_detail.company.name | html_inline | safe }}</p>
+			<hr>
 			<div class="col-sm-10">
-				<p>{{ jobs_detail.get_raw_string | safe }}</p>
-				<p>{{ jobs_detail.welfare }}</p>
-				<p>{{ jobs_detail.skill }}</p>
+				<p class="lead"><b>Description</b>
+					<p>{{ jobs_detail.description | convert_to_html | safe }}</p>
+				</p>
+				<br>
+				<p class="lead"><b>Welfare</b>
+					<p>{{ jobs_detail.welfare | convert_to_html | safe }}</p>
+				</p>
+				<br>
+				<p class="lead"><b>Skill</b>
+					<p>{{ jobs_detail.skill | convert_to_html | safe }}</p>
+				</p>
+				<p class="lead"><b>Wage</b>
+					<p>{{ jobs_detail.wage | convert_to_html | safe }}</p>
+				</p>
 			</div>
 			<div class="col-sm-2 text-right">
 				<p>Job Type</p>
@@ -47,10 +61,11 @@
 				<ul class="list-unstyled">
 					<a href="{{ jobs_detail.url }}" class="btn btn-theme">
 						<i class="fa fa-tag"></i>
-						Apply
+						{{ jobs_detail.get_job_apply_url }}
 					</a>
 				</ul>
 			</div>
 		</div>
 	</div>
+</div>
 {% endblock content %}
