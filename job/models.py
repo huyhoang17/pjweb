@@ -2,12 +2,10 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
-# from django.conf import settings
 
 from .consts import JOB_TYPES
-from companys.models import CompanyProfile
 from accounts.models import UserProfile
-# Create your models here.
+from companys.models import CompanyProfile
 
 
 class JobsDetailRank(models.Model):
@@ -49,15 +47,25 @@ class JobsInfo(JobsTimeStamp):
     skill = models.TextField(blank=False, null=True, max_length=250)
     # url when crawler data
     url = models.URLField(blank=True, null=True, max_length=250)
-    exriry_date = models.DateTimeField(blank=True, null=True, default=None)
+    exriry_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.name
 
     @property
     def get_raw_string(self):
-        s = self.description.repace('|', '.')
-        return "\n".join(s)
+        s = self.description
+        return "\n".join(s.split("|"))
+
+    @property
+    def get_username(self):
+        return self.user.user.username
+
+    def get_job_apply_url(self):
+        '''
+        https://itviec.com/ --> itviec.com
+        '''
+        return self.url.split('//')[1].split('/')[0]
 
     def get_absolute_url(self):
         return reverse(

@@ -1,13 +1,16 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.http import Http404
 from django.views.generic import DetailView, DeleteView, ListView
 from django.views.generic.edit import CreateView
+from django.shortcuts import redirect
 
 from .models import JobsInfo
 from .forms import JobCreateForm
-from companys.mixins import CompanyRequiredMixin
+from accounts.models import UserProfile
 from accounts.mixins import StaffRequiredMixin
+from companys.models import Membership
+from companys.mixins import CompanyRequiredMixin
 
 
 class JobListView(ListView):
@@ -42,23 +45,47 @@ class JobDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        # context["company_info"] = CompanyProfile.objects.all().first()
         return context
 
 
-class JobCreateView(LoginRequiredMixin, CompanyRequiredMixin, CreateView):
+class JobCreateView(CompanyRequiredMixin, CreateView):
     form_class = JobCreateForm
     template_name = "job/forms_create.html"
     success_url = "/jobs"
-    template_success = "job/jobsinfo_list.html"
 
-    def form_valid(self, form, *args, **kwargs):
-        return super().form_valid(form, *args, **kwargs)
+    def get_form_kwargs(self):
+        '''
+        Use to send request(user) in ModelForm
+        '''
+        kwargs = super().get_form_kwargs()
+        username = self.request.user.username
+        membership = Membership.objects.get(account__user__username=username)
+        kwargs["instance"] = membership.company
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["company_login_required"] = True
+        user = self.request.user
+        member = Membership.objects.get(account__user=user)
+        # use for delete company account
+        context["membership"] = member
         return context
+
+    def form_valid(self, form, *args, **kwargs):
+        super().form_valid(form, *args, **kwargs)
+        job_obj = form.instance
+        job_obj = form.save(commit=False)
+        username = self.request.user.username
+        try:
+            user = UserProfile.objects.get(user__username=username)
+            job_obj.user = user
+            membership = Membership.objects.get(account=user)
+            job_obj.company = membership.company
+            job_obj.save()
+        except JobsInfo.DoesNotExist:
+            del job_obj
+            raise Http404
+        return redirect("jobs")
 
 
 class JobDeleteView(StaffRequiredMixin, DeleteView):

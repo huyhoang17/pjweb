@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 
 from .models import Newsletters
 from .forms import NewslettersForm, ContactForm
+from accounts.models import UserProfile
 from companys.models import CompanyProfile
 from job.models import JobsInfo
 
@@ -20,10 +21,15 @@ class HomeView(ListView):
         query = self.request.GET.get("q")
         if query:
             return redirect("/jobs/?q={}".format(query))
-        return super().get(self, request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        try:
+            username = self.request.user.username
+            UserProfile.objects.get(user__username=username)
+        except UserProfile.DoesNotExist:
+            pass
         context["companys_list"] = CompanyProfile.objects.all()[:10]
         return context
 

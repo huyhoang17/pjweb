@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import (
@@ -11,7 +10,6 @@ from .models import CompanyProfile, Membership
 from .forms import CompanyCreateForm
 from accounts.models import UserProfile
 from accounts.mixins import StaffRequiredMixin
-# Create your views here.
 
 
 class CompanyListView(ListView):
@@ -61,11 +59,17 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         super().form_valid(form, *args, **kwargs)
         # then create `Membership` object
         username = self.request.user.username
-        user = User.objects.get(username=username)
-        user_acc = UserProfile.objects.get(user=user)
+        user_acc = UserProfile.objects.get(user__username=username)
         company = form.instance
         member = Membership(account=user_acc, company=company)
         member.save()
+
+        company_info_required = self.request.session.get(
+            "company_info_required", None
+        )
+        if company_info_required:
+            del self.request.session["company_info_required"]
+            return redirect("create_jobs")
         return redirect(self.success_url)
 
 

@@ -4,7 +4,6 @@ from django.db.models.signals import pre_save, post_init
 from django.utils.text import slugify
 
 from accounts.models import UserProfile
-# Create your models here.
 
 
 class TimeStamp(models.Model):
@@ -16,7 +15,7 @@ class TimeStamp(models.Model):
 
 
 class Membership(models.Model):
-    account = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    account = models.ForeignKey(UserProfile)
     company = models.ForeignKey('CompanyProfile', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -40,21 +39,20 @@ class CompanyProfile(TimeStamp):
     member = models.ManyToManyField(UserProfile,
                                     through='Membership',
                                     blank=True)
-    name = models.CharField(blank=False,
-                            null=True,
-                            max_length=50,
-                            default='abc')
-    slug = models.SlugField(blank=True)
+    name = models.CharField(blank=True,
+                            max_length=255,
+                            default='company-profile')
+    slug = models.SlugField(blank=True, max_length=255)
     description = models.TextField(blank=True, null=True, max_length=1000)
-    address = models.CharField(blank=True, null=True, max_length=50)
+    address = models.CharField(blank=True, null=True, max_length=255)
 
     city = models.CharField(blank=True,
                             null=True,
-                            max_length=50,
+                            max_length=255,
                             default="Ha Noi")
     country = models.CharField(blank=True,
                                null=True,
-                               max_length=50,
+                               max_length=255,
                                default='Viet Nam')
 
     phone_number = models.CharField(blank=True, null=True, max_length=250)
@@ -63,11 +61,11 @@ class CompanyProfile(TimeStamp):
                              null=True,
                              blank=True,
                              help_text="Upload logo for Company")
-    size = models.CharField(max_length=120,
+    size = models.CharField(max_length=255,
                             null=True,
                             blank=True)
 
-    email_contact = models.EmailField(max_length=220,
+    email_contact = models.EmailField(max_length=255,
                                       null=True,
                                       blank=True)
 

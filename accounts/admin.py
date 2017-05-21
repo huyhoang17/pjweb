@@ -51,6 +51,8 @@ class JobsInfoInline(admin.StackedInline):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = [
         '__str__',
+        'id',
+        'pk',
         # 'location'
         'created',
         'updated',

@@ -140,20 +140,20 @@ if DEBUG:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.\
-        UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.' +
+        'UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.\
-        MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.' +
+        'MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.\
-        CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.' +
+        'CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.\
-        NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.' +
+        'NumericPasswordValidator',
     },
 ]
 
@@ -177,18 +177,20 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(
     BASE_DIR), "static_in_env", "static_root")
 
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, "static_in_pro", "our_static"),
-# )
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(
+        BASE_DIR), "static_in_pro", "custom_static"),
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(
     BASE_DIR), "static_in_env", "media_root")
 
-# CRISPY FORM TAGs SETTINGS
+# CRISPY FORM
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-# DJANGO REGISTRATION REDUX SETTINGS
+# REGISTRATION REDUX
+INCLUDE_AUTH_URLS = True
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 LOGIN_REDIRECT_URL = '/'

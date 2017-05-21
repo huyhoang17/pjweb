@@ -8,11 +8,8 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from django.shortcuts import redirect
-
 from .models import UserProfile
 from .forms import AccountCreateForm
-# Create your views here.
 
 
 class AccountListView(ListView):
@@ -36,21 +33,18 @@ class AccountUpdateView(UpdateView):
     model = UserProfile
     template_name = "accounts/userprofile_form_update.html"
 
+    # def get_object(self):
+    #     return UserProfile.objects.get(user=self.request.user)
+
     def get(self, request, *args, **kwargs):
         '''
         Check if user is not admin or not authenticated
         '''
-        if request.user.is_staff:
-            return redirect("/")
         user = self.get_object()  # UserProfile
         if user.user.username != request.user.username and \
                 not request.user.is_staff:
             raise Http404
         return super().get(request, *args, **kwargs)
-
-    def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset(*args, **kwargs)
-        return queryset
 
 
 class AccountDeleteView(DeleteView):

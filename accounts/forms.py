@@ -7,6 +7,7 @@ class AccountCreateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = [
+            # "user__username"
             "bio",
             "location",
             "birth_date",

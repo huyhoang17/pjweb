@@ -1,13 +1,11 @@
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
 from registration.models import RegistrationProfile
-
-# Create your models here.
 
 
 class TimeStamp(models.Model):
@@ -20,9 +18,8 @@ class TimeStamp(models.Model):
 
 def image_upload_to(instance, filename):
     '''
-    PARAMS: 2 default params
-        instance: this models
-        filename:
+    :param instance: this models
+    :param filename:
     '''
     name = instance.user.username  # company name
     user_id = instance.user.id
@@ -36,9 +33,9 @@ class UserProfile(TimeStamp):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
     # company = models.ForeignKey(CompanyProfile, blank=True, null=True)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(blank=True, max_length=255, default='user-profile')
     bio = models.TextField(max_length=500, blank=True)
-    location = models.CharField(max_length=30, blank=True)
+    location = models.CharField(max_length=255, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
@@ -60,8 +57,6 @@ class UserProfile(TimeStamp):
                                null=True,
                                blank=True,
                                help_text="Upload Your CV")
-
-    # job_saved = models.
 
     def __str__(self):
         return self.user.username
@@ -89,22 +84,31 @@ def create_slug(instance, new_slug=None):
 
 
 def pre_save_job_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug or instance.slug == "None":
+    if not instance.slug or instance.slug == "user-profile":
         instance.slug = create_slug(instance)
 
 
 pre_save.connect(pre_save_job_receiver, sender=UserProfile)
 
 
-def register_user_account(sender, instance, *args, **kwargs):
-    username = instance.user.username
-    user = User.objects.get(username=username)
-    user_acc = UserProfile.objects.filter(user=user).first()
-    if not user_acc and instance.activated is True:
-        user.is_active = True
-        user_profile = UserProfile(user=user)
-        user_profile.save()
-        user.save()
+def pre_save_job_receiver(sender, instance, *args, **kwargs):
+    if instance.activated:
+        user_acc = UserProfile(user=instance.user)
+        user_acc.save()
 
 
-pre_save.connect(register_user_account, sender=RegistrationProfile)
+pre_save.connect(pre_save_job_receiver, sender=RegistrationProfile)
+
+
+def register_user_admin_profile_pre_save(sender, instance, **kwargs):
+    '''
+    :param sender: base.ModelBase obj
+    :param instance: User ojb
+    '''
+    try:
+        UserProfile.objects.get(user=instance)
+    except UserProfile.DoesNotExist:
+        UserProfile(user=instance)
+
+
+pre_save.connect(register_user_admin_profile_pre_save, sender=User)

@@ -16,6 +16,7 @@ class JobsInfoAdmin(admin.ModelAdmin):
         "created",
         "updated"
     )
+    list_per_page = 25
     readonly_fields = ["created", "updated"]
     search_fields = [
         "name",
