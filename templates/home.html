@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
 {% load jobs_info %}
 <style>
 {% block style %}
 .jumbotron {
-	background: url(http://blog.efpsa.org/wp-content/uploads/2016/07/python-programming-in-psychology-analysis-data-expyriment.jpg) no-repeat center center fixed;
+	background: url({% static 'img/workspace.jpg' %}) no-repeat center center fixed;
 	background-size: cover;
 	height: 650px;
 }
