@@ -10,6 +10,7 @@ from .models import CompanyProfile, Membership
 from .forms import CompanyCreateForm
 from accounts.models import UserProfile
 from accounts.mixins import StaffRequiredMixin
+from job.models import JobsInfo
 
 
 class CompanyListView(ListView):
@@ -42,6 +43,9 @@ class CompanyDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        company = self.get_object()
+        jobs_company = JobsInfo.objects.filter(company=company)[:5]
+        context["jobs_company"] = jobs_company
         return context
 
 
@@ -69,6 +73,7 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         )
         if company_info_required:
             del self.request.session["company_info_required"]
+            del form
             return redirect("create_jobs")
         return redirect(self.success_url)
 

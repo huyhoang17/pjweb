@@ -1,9 +1,16 @@
 {% extends "base.html" %}
+
+{% load jobs_info %}
+
 <style>
 {% block style %}
-	.main {
-		margin-top: 100px;
-	}
+.main {
+	margin-top: 100px;
+}
+#item {
+	border: 1px solid #e1e1e1;
+	padding: 30px;
+}
 {% endblock style %}
 </style>
 {% block header %}
@@ -28,6 +35,28 @@
 					<p><b>Size</b>: {{ companys_detail.size }}</p>
 					<p><b>Email Contact</b>: {{ companys_detail.email_contact }}</p>
 				</div>
+			</div>
+			<hr>
+			<div class="col-sm-10 col-sm-offset-1">
+			<h3 class="lead text-center">Jobs List - {{ companys_detail.name }}</h3>
+			{% if jobs_company %}
+			{% for job in jobs_company %}
+				<div id="item">
+					<div class="row">
+						<a href="{{ job.get_absolute_url }}">{{ job.name }}</a>
+						- {{ job.company }}
+						<hr>
+						<p>{{ job.description | convert_to_html | safe |truncatewords:50 }}</p>
+					</div>
+				</div>
+				<hr>
+			{% endfor %}
+			{% else %}
+				<div class="lead text-center">
+					<small>No Jobs recently</small>
+				</div>
+
+			{% endif %}
 			</div>
 		</div>
 	{% else %}

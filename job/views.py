@@ -49,19 +49,23 @@ class JobDetailView(DetailView):
 
 
 class JobCreateView(CompanyRequiredMixin, CreateView):
+    model = JobsInfo
     form_class = JobCreateForm
     template_name = "job/forms_create.html"
     success_url = "/jobs"
 
-    def get_form_kwargs(self):
-        '''
-        Use to send request(user) in ModelForm
-        '''
-        kwargs = super().get_form_kwargs()
-        username = self.request.user.username
-        membership = Membership.objects.get(account__user__username=username)
-        kwargs["instance"] = membership.company
-        return kwargs
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs)
+
+    # def get_form_kwargs(self):
+    #     '''
+    #     Use to send request(user) in ModelForm
+    #     '''
+    #     kwargs = super().get_form_kwargs()
+    #     username = self.request.user.username
+    #     membership = Membership.objects.get(account__user__username=username)
+    #     kwargs["instance"] = membership.company
+    #     return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
