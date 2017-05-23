@@ -95,5 +95,13 @@ class JobCreateView(CompanyRequiredMixin, CreateView):
 class JobDeleteView(StaffRequiredMixin, DeleteView):
     model = JobsInfo
 
+    def get(self, request, *args, **kwargs):
+        job_obj = self.get_object()
+        user = request.user._wrapped if hasattr(
+            request.user, '_wrapped') else request.user  # User
+        if job_obj.user != user.userprofile:
+            raise Http404
+        return super().get(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse("jobs")

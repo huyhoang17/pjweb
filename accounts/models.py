@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.core.validators import RegexValidator
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
 
 from registration.models import RegistrationProfile
@@ -108,7 +108,8 @@ def register_user_admin_profile_pre_save(sender, instance, **kwargs):
     try:
         UserProfile.objects.get(user=instance)
     except UserProfile.DoesNotExist:
-        UserProfile(user=instance)
+        # UserProfile(user=instance)
+        UserProfile.objects.create(user=instance)
 
 
-pre_save.connect(register_user_admin_profile_pre_save, sender=User)
+post_save.connect(register_user_admin_profile_pre_save, sender=User)

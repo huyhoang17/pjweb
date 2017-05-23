@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import (
     DetailView, DeleteView, ListView
@@ -9,7 +10,6 @@ from django.urls import reverse
 from .models import CompanyProfile, Membership
 from .forms import CompanyCreateForm
 from accounts.models import UserProfile
-from accounts.mixins import StaffRequiredMixin
 from job.models import JobsInfo
 
 
@@ -73,13 +73,26 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         )
         if company_info_required:
             del self.request.session["company_info_required"]
-            del form
             return redirect("create_jobs")
         return redirect(self.success_url)
 
 
-class CompanyDeleteView(StaffRequiredMixin, DeleteView):
+class CompanyDeleteView(LoginRequiredMixin, DeleteView):
     model = CompanyProfile
+
+    def get(self, request, *args, **kwargs):
+        company_obj = self.get_object()
+        user = request.user._wrapped if hasattr(
+            request.user, '_wrapped') else request.user  # User
+        try:
+            membership = Membership.objects.get(account=user.userprofile)
+            company_pk = membership.company.pk
+            if not request.user.is_staff:
+                if company_pk != company_obj.pk:
+                    raise Http404
+        except Membership.DoesNotExist:
+            raise Http404
+        return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse("companies")
