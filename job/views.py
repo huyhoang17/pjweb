@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.http import Http404
 from django.views.generic import DetailView, DeleteView, ListView
 from django.views.generic.edit import CreateView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from .models import JobsInfo
 from .forms import JobCreateForm
@@ -24,6 +24,9 @@ class JobListView(ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
+        # iteritem = self.request.GET.lists()
+        # for k, v in iteritem:
+        #     print(k, v)
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get("q")
         if query:
@@ -100,7 +103,7 @@ class JobDeleteView(StaffRequiredMixin, DeleteView):
         user = request.user._wrapped if hasattr(
             request.user, '_wrapped') else request.user  # User
         if job_obj.user != user.userprofile:
-            raise Http404
+            return render(request, '404.html')
         return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
