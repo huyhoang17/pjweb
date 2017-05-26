@@ -2,7 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import (
-    DetailView, DeleteView, ListView
+    DetailView,
+    DeleteView,
+    ListView,
+    UpdateView
 )
 from django.views.generic.edit import CreateView
 from django.urls import reverse
@@ -43,8 +46,18 @@ class CompanyDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        user_acc = self.request.user.userprofile
+        company_obj = self.get_object()
+        try:
+            Membership.objects.get(
+                company=company_obj,
+                account=user_acc
+            )
+            context["company_update_required"] = True
+        except Membership.DoesNotExist:
+            pass
         company = self.get_object()
-        jobs_company = JobsInfo.objects.filter(company=company)[:5]
+        jobs_company = JobsInfo.objects.filter(company=company)
         context["jobs_company"] = jobs_company
         return context
 
@@ -75,6 +88,27 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
             del self.request.session["company_info_required"]
             return redirect("create_jobs")
         return redirect(self.success_url)
+
+
+class CompanyUpdateView(LoginRequiredMixin, UpdateView):
+    model = CompanyProfile
+    form_class = CompanyCreateForm
+    template_name = "companys/companyprofile_form_update.html"
+    context_object_name = "company_update"
+
+    def get(self, request, *args, **kwargs):
+        user = request.user._wrapped if hasattr(
+            request.user, '_wrapped') else request.user  # User
+        company_obj = self.get_object()
+        try:
+            membership = Membership.objects.get(account=user.userprofile)
+            company_pk = membership.company.pk
+            if not request.user.is_staff:
+                if company_pk != company_obj.pk:
+                    raise Http404
+        except Membership.DoesNotExist:
+            raise Http404
+        return super().get(request, *args, **kwargs)
 
 
 class CompanyDeleteView(LoginRequiredMixin, DeleteView):

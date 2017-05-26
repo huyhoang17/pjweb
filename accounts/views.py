@@ -1,6 +1,4 @@
-from django.contrib.auth import logout
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.views.generic import (
     DetailView,
@@ -8,6 +6,8 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
+from django.shortcuts import render, redirect
+
 from .models import UserProfile
 from .forms import AccountCreateForm
 
@@ -33,9 +33,6 @@ class AccountUpdateView(UpdateView):
     model = UserProfile
     template_name = "accounts/userprofile_form_update.html"
 
-    # def get_object(self):
-    #     return UserProfile.objects.get(user=self.request.user)
-
     def get(self, request, *args, **kwargs):
         '''
         Check if user is not admin or not authenticated
@@ -46,9 +43,21 @@ class AccountUpdateView(UpdateView):
             raise Http404
         return super().get(request, *args, **kwargs)
 
+    def form_valid(self, form, *args, **kwargs):
+        email = form.cleaned_data.get("email")
+        user_obj = self.get_object()  # UserProfile
+        try:
+            user = User.objects.get(userprofile=user_obj)
+            user.email = email
+            user.save()
+        except User.DoesNotExist:
+            return render(self.request, "404.html")
+        return super().form_valid(form, *args, **kwargs)
+
 
 class AccountDeleteView(DeleteView):
     model = UserProfile
+    success_url = "/"
 
     def get(self, request, *args, **kwargs):
         '''
@@ -61,11 +70,7 @@ class AccountDeleteView(DeleteView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        username = request.user.username
-        user_acc = User.objects.filter(username=username).first()
-        user_acc.delete()
-        logout(request)
-        return self.delete(request, *args, **kwargs)
-
-    def get_success_url(self):
-        return reverse("jobs")
+        user_acc = self.get_object()
+        user = user_acc.user
+        user.delete()
+        return redirect("home")

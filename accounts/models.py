@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
 
+from newletters.models import Newsletters
 from registration.models import RegistrationProfile
 
 
@@ -17,10 +18,6 @@ class TimeStamp(models.Model):
 
 
 def image_upload_to(instance, filename):
-    '''
-    :param instance: this models
-    :param filename:
-    '''
     name = instance.user.username  # company name
     user_id = instance.user.id
     user = name + str(user_id)
@@ -33,7 +30,7 @@ class UserProfile(TimeStamp):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
     # company = models.ForeignKey(CompanyProfile, blank=True, null=True)
-    slug = models.SlugField(blank=True, max_length=255, default='user-profile')
+    slug = models.SlugField(blank=True, max_length=255)
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=255, blank=True)
     birth_date = models.DateField(null=True, blank=True)
@@ -83,24 +80,34 @@ def create_slug(instance, new_slug=None):
     return slug
 
 
-def pre_save_job_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug or instance.slug == "user-profile":
+def pre_save_slug_userprofile_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
         instance.slug = create_slug(instance)
 
 
-pre_save.connect(pre_save_job_receiver, sender=UserProfile)
+pre_save.connect(pre_save_slug_userprofile_receiver, sender=UserProfile)
 
 
-def pre_save_job_receiver(sender, instance, *args, **kwargs):
+def pre_save_auth_user_receiver(sender, instance, *args, **kwargs):
     if instance.activated:
-        user_acc = UserProfile(user=instance.user)
-        user_acc.save()
+        email_user = instance.user.email
+        try:
+            Newsletters.objects.get(email=email_user)
+        except Newsletters.DoesNotExist:
+            new_obj = Newsletters(
+                email=email_user, full_name=instance.user.username)
+            new_obj.save()
+        try:
+            user_acc = UserProfile.objects.get(user=instance.user)
+            user_acc.save()
+        except UserProfile.DoesNotExist:
+            pass
 
 
-pre_save.connect(pre_save_job_receiver, sender=RegistrationProfile)
+pre_save.connect(pre_save_auth_user_receiver, sender=RegistrationProfile)
 
 
-def register_user_admin_profile_pre_save(sender, instance, **kwargs):
+def pre_save_register_userprofile_profile(sender, instance, **kwargs):
     '''
     :param sender: base.ModelBase obj
     :param instance: User ojb
@@ -108,8 +115,7 @@ def register_user_admin_profile_pre_save(sender, instance, **kwargs):
     try:
         UserProfile.objects.get(user=instance)
     except UserProfile.DoesNotExist:
-        # UserProfile(user=instance)
         UserProfile.objects.create(user=instance)
 
 
-post_save.connect(register_user_admin_profile_pre_save, sender=User)
+post_save.connect(pre_save_register_userprofile_profile, sender=User)

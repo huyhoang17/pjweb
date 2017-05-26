@@ -6,6 +6,8 @@ from django.db import models
 class Newsletters(models.Model):
     email = models.EmailField()
     full_name = models.CharField(max_length=100, blank=True, null=True)
+    # activation_key = models.CharField(max_length=200, blank=True, null=True)
+    # activated = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 

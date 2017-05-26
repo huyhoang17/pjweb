@@ -23,8 +23,8 @@ class JobsTimeStamp(models.Model):
 
 
 class JobsInfo(JobsTimeStamp):
-    name = models.CharField(blank=False, null=True, max_length=100)
-    slug = models.SlugField(blank=True)
+    name = models.CharField(blank=False, null=True, max_length=255)
+    slug = models.SlugField(blank=True, max_length=255)
     user = models.ForeignKey(UserProfile, blank=True, null=True)
     company = models.ForeignKey(CompanyProfile, blank=False, null=True)
 
@@ -40,13 +40,13 @@ class JobsInfo(JobsTimeStamp):
 
     wage = models.CharField(blank=False,
                             null=True,
-                            max_length=100,
+                            max_length=255,
                             default="Unknown")
     experience = models.TextField(blank=False, null=True, max_length=1000)
     welfare = models.TextField(blank=False, null=True, max_length=1000)
-    skill = models.TextField(blank=False, null=True, max_length=250)
+    skill = models.TextField(blank=False, null=True, max_length=1000)
     # url when crawler data
-    url = models.URLField(blank=True, null=True, max_length=250)
+    url = models.URLField(blank=True, null=True, max_length=255)
     exriry_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):

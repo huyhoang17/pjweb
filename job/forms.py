@@ -1,19 +1,14 @@
 from django import forms
+# from django.contrib.admin import widgets
 
 from .models import JobsInfo
 
 
 class JobCreateForm(forms.ModelForm):
-    # company_name = forms.CharField(disabled=True)
 
-    # def __init__(self, *args, **kwargs):
-    #     '''
-    #     :param kwargs["instance"]: company name
-    #     '''
-    #     super().__init__(*args, **kwargs)
-    #     self.fields["company_name"].initial = kwargs.get("instance", None)
-    #     del kwargs
-    #     self.fields['company'].widget.attrs['readonly'] = True
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.fields['exriry_date'].widget = widgets.AdminSplitDateTime()
 
     class Meta:
         model = JobsInfo

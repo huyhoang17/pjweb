@@ -1,7 +1,13 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import Http404
-from django.views.generic import DetailView, DeleteView, ListView
+from django.views.generic import (
+    DetailView,
+    DeleteView,
+    ListView,
+    UpdateView
+)
 from django.views.generic.edit import CreateView
 from django.shortcuts import redirect, render
 
@@ -13,7 +19,7 @@ from companys.models import Membership
 from companys.mixins import CompanyRequiredMixin
 
 
-class JobListView(ListView):
+class JobListView(LoginRequiredMixin, ListView):
     model = JobsInfo
     queryset = JobsInfo.objects.all()
     context_object_name = "jobs_list"
@@ -39,15 +45,14 @@ class JobListView(ListView):
         return qs
 
 
-class JobDetailView(DetailView):
+class JobDetailView(LoginRequiredMixin, DetailView):
     model = JobsInfo
     context_object_name = "jobs_detail"
 
-    def get_object(self, *args, **kwargs):
-        return super().get_object(*args, **kwargs)
-
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        if self.request.user.is_superuser:
+            context["job_update_required"] = True
         return context
 
 
@@ -60,22 +65,12 @@ class JobCreateView(CompanyRequiredMixin, CreateView):
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs)
 
-    # def get_form_kwargs(self):
-    #     '''
-    #     Use to send request(user) in ModelForm
-    #     '''
-    #     kwargs = super().get_form_kwargs()
-    #     username = self.request.user.username
-    #     membership = Membership.objects.get(account__user__username=username)
-    #     kwargs["instance"] = membership.company
-    #     return kwargs
-
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         user = self.request.user
         member = Membership.objects.get(account__user=user)
-        # use for delete company account
         context["membership"] = member
+        # use for delete company account
         return context
 
     def form_valid(self, form, *args, **kwargs):
@@ -93,6 +88,22 @@ class JobCreateView(CompanyRequiredMixin, CreateView):
             del job_obj
             raise Http404
         return redirect("jobs")
+
+
+class JobUpdateView(StaffRequiredMixin, UpdateView):
+    model = JobsInfo
+    form_class = JobCreateForm
+    template_name = "job/jobsinfo_form_update.html"
+    context_object_name = "job_update"
+
+    def get(self, request, *args, **kwargs):
+        user = request.user._wrapped if hasattr(
+            request.user, '_wrapped') else request.user  # User
+        job_obj = self.get_object()
+        if job_obj.user != user.userprofile and \
+                not request.user.is_staff:
+            raise Http404
+        return super().get(request, *args, **kwargs)
 
 
 class JobDeleteView(StaffRequiredMixin, DeleteView):
