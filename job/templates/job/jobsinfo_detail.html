@@ -16,9 +16,18 @@
 <div class="main">
 	<div class="container">
 		<div class="row">
+		<div class="col-sm-12">
+			{% if job_update_required %}
+			<h3 class="lead text-center"><a href="{% url 'update_jobs' jobs_detail.pk jobs_detail.slug %}">Edit Here</a></h3>
+			{% endif %}
 			<h3 class="lead"><b>{{ jobs_detail.name }}</b></h3>
-			<p>{{ jobs_detail.company.address | html_inline | safe }} - {{ jobs_detail.company.name | html_inline | safe }}</p>
+			<p>{{ jobs_detail.company.address | html_inline | safe }} 
+			{% if jobs_detail.company %}
+			<a href="{% url 'detail_companys' jobs_detail.company.pk jobs_detail.company.slug %}">- {{ jobs_detail.company.name | html_inline | safe }}</a>
+			{% endif %}
+			</p>
 			<hr>
+			</div>
 			<div class="col-sm-10">
 				<p class="lead"><b>Description</b>
 					<p>{{ jobs_detail.description | convert_to_html | safe }}</p>
@@ -35,31 +44,31 @@
 					<p>{{ jobs_detail.wage | convert_to_html | safe }}</p>
 				</p>
 			</div>
-			<div class="col-sm-2 text-right">
+			<div class="col-sm-2 text-center">
 				<p>Job Type</p>
 				<ul class="list-unstyled">
-					<a class="btn btn-theme">
+					<a class="btn btn-theme btn-block">
 						<i class="fa fa-tag"></i>
 						{{ jobs_detail.job_type }}
 					</a>
 				</ul>
 				<p>Wage</p>
 				<ul class="list-unstyled">
-					<a class="btn btn-theme">
+					<a class="btn btn-theme btn-block">
 						<i class="fa fa-tag"></i>
 						{{ jobs_detail.wage }}
 					</a>
 				</ul>
 				<p>Expiry Date</p>
 				<ul class="list-unstyled">
-					<a class="btn btn-theme">
+					<a class="btn btn-theme btn-block">
 						<i class="fa fa-tag"></i>
 						{{ jobs_detail.exriry_date }}
 					</a>
 				</ul>
 				<p>Apply</p>
 				<ul class="list-unstyled">
-					<a href="{{ jobs_detail.url }}" class="btn btn-theme">
+					<a href="{{ jobs_detail.url }}" class="btn btn-theme btn-block">
 						<i class="fa fa-tag"></i>
 						{{ jobs_detail.get_job_apply_url }}
 					</a>

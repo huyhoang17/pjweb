@@ -1,6 +1,9 @@
 {% load staticfiles %}
 <style>
 {% block style %}
+a#email-subcribe {
+	color: #fff;
+}
 {% endblock style %}
 </style>
 <div class="jumbotron text-center">
@@ -14,7 +17,7 @@
 			</div> -->
 			<div class="form-group">
 				<button class="btn btn-primary btn-lg">
-					<a href="{% url 'newsletters' %}">Submit Email Here</a>
+					<a id="email-subcribe" href="{% url 'newsletters' %}">Submit Email Here</a>
 				</button>
 			</div>
 		</form>
