@@ -18,6 +18,9 @@
 {% if request.user.is_authenticated %}
 	<div class="main container">
 		<div class="row">
+			{% if messages %}
+			{% include "alert_messages.html" with messages=messages %}
+			{% endif %}	
 			<div class="col-sm-8">
 				<div class="col-sm-4 text-center">
 					<a class="lead" href="{{ accounts_detail.get_absolute_url }}">{{ accounts_detail.user.username }}</a>

@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import Http404
@@ -15,19 +15,16 @@ from .models import JobsInfo
 from .forms import JobCreateForm
 from accounts.models import UserProfile
 from accounts.mixins import StaffRequiredMixin
+from accounts.views import get_auth_user
 from companys.models import Membership
 from companys.mixins import CompanyRequiredMixin
 
 
-class JobListView(LoginRequiredMixin, ListView):
+class JobListView(ListView):
     model = JobsInfo
     queryset = JobsInfo.objects.all()
     context_object_name = "jobs_list"
     paginate_by = 10
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
 
     def get_queryset(self, *args, **kwargs):
         # iteritem = self.request.GET.lists()
@@ -45,7 +42,7 @@ class JobListView(LoginRequiredMixin, ListView):
         return qs
 
 
-class JobDetailView(LoginRequiredMixin, DetailView):
+class JobDetailView(DetailView):
     model = JobsInfo
     context_object_name = "jobs_detail"
 
@@ -62,13 +59,9 @@ class JobCreateView(CompanyRequiredMixin, CreateView):
     template_name = "job/forms_create.html"
     success_url = "/jobs"
 
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs)
-
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        user = self.request.user
-        member = Membership.objects.get(account__user=user)
+        member = Membership.objects.get(account__user=self.request.user)
         context["membership"] = member
         # use for delete company account
         return context
@@ -77,11 +70,10 @@ class JobCreateView(CompanyRequiredMixin, CreateView):
         super().form_valid(form, *args, **kwargs)
         job_obj = form.instance
         job_obj = form.save(commit=False)
-        username = self.request.user.username
         try:
-            user = UserProfile.objects.get(user__username=username)
-            job_obj.user = user
-            membership = Membership.objects.get(account=user)
+            user_acc = UserProfile.objects.get(user=self.request.user)
+            job_obj.user = user_acc
+            membership = Membership.objects.get(account=user_acc)
             job_obj.company = membership.company
             job_obj.save()
         except JobsInfo.DoesNotExist:
@@ -97,12 +89,12 @@ class JobUpdateView(StaffRequiredMixin, UpdateView):
     context_object_name = "job_update"
 
     def get(self, request, *args, **kwargs):
-        user = request.user._wrapped if hasattr(
-            request.user, '_wrapped') else request.user  # User
+        user = get_auth_user(request)
         job_obj = self.get_object()
         if job_obj.user != user.userprofile and \
                 not request.user.is_staff:
             raise Http404
+        messages.info(request, 'Your job was updated.')
         return super().get(request, *args, **kwargs)
 
 
@@ -111,9 +103,9 @@ class JobDeleteView(StaffRequiredMixin, DeleteView):
 
     def get(self, request, *args, **kwargs):
         job_obj = self.get_object()
-        user = request.user._wrapped if hasattr(
-            request.user, '_wrapped') else request.user  # User
-        if job_obj.user != user.userprofile:
+        user = get_auth_user(request)
+        if job_obj.user != user.userprofile and \
+                not request.user.is_staff:
             return render(request, '404.html')
         return super().get(request, *args, **kwargs)
 

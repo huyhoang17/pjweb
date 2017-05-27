@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_init
 from django.utils.text import slugify
 
+from .consts import CITY, SIZE_COMPANY
 from accounts.models import UserProfile
 
 
@@ -49,6 +50,7 @@ class CompanyProfile(TimeStamp):
     city = models.CharField(blank=True,
                             null=True,
                             max_length=255,
+                            choices=CITY,
                             default="Ha Noi")
     country = models.CharField(blank=True,
                                null=True,
@@ -63,7 +65,8 @@ class CompanyProfile(TimeStamp):
                              help_text="Upload logo for Company")
     size = models.CharField(max_length=255,
                             null=True,
-                            blank=True)
+                            blank=False,
+                            choices=SIZE_COMPANY)
 
     email_contact = models.EmailField(max_length=255,
                                       null=True,

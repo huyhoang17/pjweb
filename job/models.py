@@ -22,11 +22,25 @@ class JobsTimeStamp(models.Model):
         abstract = True
 
 
+class JobsInfoQuerySet(models.query.QuerySet):
+    def active(self):
+        return self.filter(active=True)
+
+
+class JobsInfoManager(models.Manager):
+    def get_queryset(self):
+        return JobsInfoQuerySet(self.model, using=self._db)
+
+    def all(self, *args, **kwargs):
+        return self.get_queryset().active()
+
+
 class JobsInfo(JobsTimeStamp):
     name = models.CharField(blank=False, null=True, max_length=255)
     slug = models.SlugField(blank=True, max_length=255)
+    active = models.BooleanField(default=False)
     user = models.ForeignKey(UserProfile, blank=True, null=True)
-    company = models.ForeignKey(CompanyProfile, blank=False, null=True)
+    company = models.ForeignKey(CompanyProfile, blank=True, null=True)
 
     description = models.TextField(blank=False,
                                    null=True,
@@ -38,16 +52,17 @@ class JobsInfo(JobsTimeStamp):
                                 choices=JOB_TYPES,
                                 default='FULL TIME')
 
-    wage = models.CharField(blank=False,
+    wage = models.CharField(blank=True,
                             null=True,
-                            max_length=255,
-                            default="Unknown")
+                            max_length=255)
     experience = models.TextField(blank=False, null=True, max_length=1000)
     welfare = models.TextField(blank=False, null=True, max_length=1000)
     skill = models.TextField(blank=False, null=True, max_length=1000)
     # url when crawler data
     url = models.URLField(blank=True, null=True, max_length=255)
     exriry_date = models.DateTimeField(blank=True, null=True)
+
+    objects = JobsInfoManager()
 
     def __str__(self):
         return self.name

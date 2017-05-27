@@ -13,6 +13,7 @@ from django.urls import reverse
 from .models import CompanyProfile, Membership
 from .forms import CompanyCreateForm
 from accounts.models import UserProfile
+from accounts.views import get_auth_user
 from job.models import JobsInfo
 
 
@@ -68,15 +69,11 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
     template_name = "companys/forms_create.html"
     success_url = "/companies"
 
-    def get_user(self, request, *args, **kwargs):
-        return request.user
-
     def form_valid(self, form, *args, **kwargs):
         # save first
         super().form_valid(form, *args, **kwargs)
         # then create `Membership` object
-        username = self.request.user.username
-        user_acc = UserProfile.objects.get(user__username=username)
+        user_acc = UserProfile.objects.get(user=self.request.user)
         company = form.instance
         member = Membership(account=user_acc, company=company)
         member.save()
@@ -97,8 +94,7 @@ class CompanyUpdateView(LoginRequiredMixin, UpdateView):
     context_object_name = "company_update"
 
     def get(self, request, *args, **kwargs):
-        user = request.user._wrapped if hasattr(
-            request.user, '_wrapped') else request.user  # User
+        user = get_auth_user(request)
         company_obj = self.get_object()
         try:
             membership = Membership.objects.get(account=user.userprofile)
@@ -116,8 +112,7 @@ class CompanyDeleteView(LoginRequiredMixin, DeleteView):
 
     def get(self, request, *args, **kwargs):
         company_obj = self.get_object()
-        user = request.user._wrapped if hasattr(
-            request.user, '_wrapped') else request.user  # User
+        user = get_auth_user(request)
         try:
             membership = Membership.objects.get(account=user.userprofile)
             company_pk = membership.company.pk

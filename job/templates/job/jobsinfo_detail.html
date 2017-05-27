@@ -12,10 +12,14 @@
 }
 {% endblock style %}
 </style>
+
 {% block content %}
 <div class="main">
 	<div class="container">
 		<div class="row">
+		{% if messages %}
+		{% include "alert_messages.html" with messages=messages %}
+		{% endif %}		
 		<div class="col-sm-12">
 			{% if job_update_required %}
 			<h3 class="lead text-center"><a href="{% url 'update_jobs' jobs_detail.pk jobs_detail.slug %}">Edit Here</a></h3>
@@ -52,6 +56,7 @@
 						{{ jobs_detail.job_type }}
 					</a>
 				</ul>
+				{% if jobs_detail.wage %}
 				<p>Wage</p>
 				<ul class="list-unstyled">
 					<a class="btn btn-theme btn-block">
@@ -59,6 +64,8 @@
 						{{ jobs_detail.wage }}
 					</a>
 				</ul>
+				{% endif %}
+				{% if jobs_detail.exriry_date %}
 				<p>Expiry Date</p>
 				<ul class="list-unstyled">
 					<a class="btn btn-theme btn-block">
@@ -66,6 +73,7 @@
 						{{ jobs_detail.exriry_date }}
 					</a>
 				</ul>
+				{% endif %}
 				<p>Apply</p>
 				<ul class="list-unstyled">
 					<a href="{{ jobs_detail.url }}" class="btn btn-theme btn-block">
