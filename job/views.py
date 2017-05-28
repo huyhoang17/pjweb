@@ -94,8 +94,11 @@ class JobUpdateView(StaffRequiredMixin, UpdateView):
         if job_obj.user != user.userprofile and \
                 not request.user.is_staff:
             raise Http404
-        messages.info(request, 'Your job was updated.')
         return super().get(request, *args, **kwargs)
+
+    def get_success_url(self, *args, **kwargs):
+        messages.info(self.request, 'Your job was updated.')
+        return super().get_success_url(*args, **kwargs)
 
 
 class JobDeleteView(StaffRequiredMixin, DeleteView):

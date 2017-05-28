@@ -12,6 +12,7 @@ def make_active(modeladmin, request, queryset):
 class JobsInfoAdmin(admin.ModelAdmin):
     list_display = [
         "name",
+        "pk",
         "active",
         "user",
         "company",

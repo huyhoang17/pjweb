@@ -5,6 +5,8 @@ from django.core.validators import RegexValidator
 from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
 
+from .consts import SEX
+from companys.consts import CITY
 from newletters.models import Newsletters
 from registration.models import RegistrationProfile
 
@@ -31,7 +33,17 @@ class UserProfile(TimeStamp):
         User, on_delete=models.CASCADE)
     # company = models.ForeignKey(CompanyProfile, blank=True, null=True)
     slug = models.SlugField(blank=True, max_length=255)
+    sex = models.CharField(blank=True,
+                           null=True,
+                           max_length=255,
+                           choices=SEX,
+                           default="M")
     bio = models.TextField(max_length=500, blank=True)
+    city = models.CharField(blank=True,
+                            null=True,
+                            max_length=255,
+                            choices=CITY,
+                            default="hanoi")
     location = models.CharField(max_length=255, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     phone_regex = RegexValidator(
@@ -54,6 +66,7 @@ class UserProfile(TimeStamp):
                                null=True,
                                blank=True,
                                help_text="Upload Your CV")
+    url = models.URLField(blank=True, null=True, max_length=255)
 
     def __str__(self):
         return self.user.username

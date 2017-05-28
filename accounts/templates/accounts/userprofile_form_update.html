@@ -1,10 +1,24 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+
+<style>
+{% block style %}
+img {
+	width: 35%;
+	margin: 0px auto;
+}
+{% endblock style %}
+</style>
+
 {% block content %}
 <div class="container">
 <h3 class="lead text-center">Edit Your Profile</h3>
 	<div class='row'>
 		<div class='col-sm-8 col-sm-offset-2'>
+			{% if accounts_detail.avatar %}
+			<img class="img-responsive img-circle" src="{{ accounts_detail.avatar.url }}" alt="">
+			{% endif %}
+			<br>
 			<form method='POST' enctype="multipart/form-data" action=''>{% csrf_token %}
 				{{ form|crispy }}
 				<input class='btn btn-primary' type='submit' value='Submit' />

@@ -8,7 +8,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import UserProfile
 from .forms import AccountCreateForm
@@ -44,6 +44,7 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AccountCreateForm
     model = UserProfile
     template_name = "accounts/userprofile_form_update.html"
+    context_object_name = "accounts_detail"
 
     def get(self, request, *args, **kwargs):
         '''
@@ -87,5 +88,4 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
         user_acc = self.get_object()
         user = user_acc.user
         user.delete()
-        # return redirect("home")
-        return self.get_success_url()
+        return redirect("home")

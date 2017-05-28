@@ -14,11 +14,14 @@ class AccountCreateForm(forms.ModelForm):
         model = UserProfile
         fields = [
             "email",
+            "sex",
             "bio",
+            "city",
             "location",
             "birth_date",
             "skill",
             "phone_number",
             "avatar",
             "cv_user",
+            "url",
         ]
