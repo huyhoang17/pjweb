@@ -1,0 +1,10 @@
+<div class="container container-alert-flash">
+<div class="alert alert-info" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <ul class="messages text-center">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type: none;" >{{ message }}</li>
+    {% endfor %}
+</ul>
+</div>
+</div>

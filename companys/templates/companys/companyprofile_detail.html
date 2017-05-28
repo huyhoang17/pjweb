@@ -1,36 +1,80 @@
 {% extends "base.html" %}
+{% load jobs_info %}
 <style>
 {% block style %}
-.container {
-	background: fixed;
-}
+	.main {
+		margin-top: 100px;
+	}
+	#item {
+		border: 1px solid #e1e1e1;
+		padding: 30px;
+	}
 {% endblock style %}
 </style>
 {% block header %}
 {% endblock header %}
 {% block content %}
-<br>
-{% if request.user.is_authenticated %}
-<div class="container">
-<div class="row">
-<div class="col-sm-4 text-center">
-	<img src="{{ companys_detail.logo }}" alt="" class="img-responsive">
-	<br>
-	<p>{{ companys_detail.name }}</p>
-</div>
-<div class="col-sm-8">
-	<p><b>Description</b>: {{ companys_detail.description }}</p>
-	<p><b>Location</b>: {{ companys_detail.city }} - {{ companys_detail.country }}</p>
-	<p><b>Website</b>: {{ companys_detail.website }}</p>
-	<p><b>Phone Number</b>: {{ companys_detail.phone_number }}</p>
-	<p><b>Size</b>: {{ companys_detail.size }}</p>
-	<p><b>Email Contact</b>: {{ companys_detail.email_contact }}</p>
-</div>
-</div>
-</div>
-{% else %}
-	<p class="lead text-center">
-		You must be <a href="{% url 'auth_login' %}">login</a> or <a href="{% url 'registration_register' %}">register</a> account to see this
-	</p>
-{% endif %}
+	<div class="main">
+		{% if request.user.is_authenticated %}
+			<h3 class="lead text-center">Detail Company Info</h3>
+			<br>
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4 text-center">
+						<img src="{{ companys_detail.logo }}" alt="" class="img-responsive">
+						<br>
+						<p>{{ companys_detail.name }}</p>
+					</div>
+					<div class="col-sm-8">
+						<div class="col-sm-10">
+							<p><b>Description</b>: {{ companys_detail.description }}</p>
+							<p><b>Location</b>: {{ companys_detail.city }} - {{ companys_detail.country }}</p>
+							<p><b>Website</b>: {{ companys_detail.website }}</p>
+							<p><b>Phone Number</b>: {{ companys_detail.phone_number }}</p>
+							<p><b>Size</b>: {{ companys_detail.size }}</p>
+							<p><b>Email Contact</b>: {{ companys_detail.email_contact }}</p>
+						</div>
+						<div class="col-sm-2">
+							{% if company_update_required %}
+								<a href="{% url 'update_companies' companys_detail.pk companys_detail.slug %}" class="lead">Edit</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="col-sm-10 col-sm-offset-1">
+					<h3 class="lead text-center">Jobs List - {{ companys_detail.name }}</h3>
+					{% if jobs_company %}
+						{% for job in jobs_company %}
+							<div id="item">
+								<div class="row">
+									<div class="col-sm-10">
+										<a href="{{ job.get_absolute_url }}">{{ job.name }}
+										</a>
+										- {{ job.company }}
+									</div>
+									<div class="col-sm-2">
+									{% if company_update_required %}
+										<a href="{% url 'update_jobs' job.pk job.slug %}" class="text-right">Edit Here</a>
+									{% endif %}
+									</div>
+									<br><hr>
+									<p>{{ job.description | convert_to_html | safe |truncatewords:50 }}</p>
+								</div>
+							</div>
+							<hr>
+						{% endfor %}
+					{% else %}
+						<div class="lead text-center">
+							<small>No Jobs recently</small>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		{% else %}
+			<p class="lead text-center">
+				You must be <a href="{% url 'auth_login' %}">login</a> or <a href="{% url 'registration_register' %}">register</a> account to see this
+			</p>
+		{% endif %}
+	</div>
 {% endblock content %}

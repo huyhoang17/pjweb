@@ -12,7 +12,7 @@ class StaffRequiredMixin(object):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_staff:
+        if request.user.is_staff or request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Http404

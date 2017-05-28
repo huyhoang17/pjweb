@@ -7,23 +7,29 @@
 }
 {% endblock style %}
 </style>
-
 {% block header %}
 {% endblock header %}
-
 {% block content %}
-<!-- {% if confirm_message %}
-<h3 class="lead text-center">{{ confirm_message }}</h3>
-{% endif %} -->
-<h3 class="main lead text-center">Subcribe Newsletter</h3>
-	<div class='row'>
-		<div class='col-sm-6 col-sm-offset-3'>
-			<form method='POST' action=''>{% csrf_token %}
-				{{ form|crispy }}
-				<div class="submit text-center">
-				<input class='btn btn-info' type='submit' value='Submit' />
+	<div class="main container">
+		{% if email_subcribed %}
+			<h3 class="lead text-center">Email Subcribed</h3>
+		{% else %}
+			{% if not confirm_message %}
+				<h3 class="lead text-center">Subcribe Newsletter</h3>
+				<div class='row'>
+					<div class='col-sm-6 col-sm-offset-3'>
+						<form method='POST' action=''>{% csrf_token %}
+							{{ form|crispy }}
+							<div class="submit text-center">
+								<input class='btn btn-info' type='submit' value='Submit' />
+							</div>
+						</form>
+					</div>
 				</div>
-			</form>
-		</div>
+			{% else %}
+				<h3 class="lead text-center">{{ confirm_message }}</h3>
+			{% endif %}
+		{% endif %}
+		
 	</div>
 {% endblock content %}

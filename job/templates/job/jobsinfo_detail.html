@@ -1,56 +1,88 @@
 {% extends "base.html" %}
+{% load jobs_info %}
 <style>
-		{% block style %}
-		.list-unstyled a {
-			color: #34495e;
-			border-color: #34495e;
-			border-width: 2px;
-		}
+{% block style %}
+.main {
+	margin-top: 100px;
+}
+.list-unstyled a {
+	color: #34495e;
+	border-color: #34495e;
+	border-width: 2px;
+}
 {% endblock style %}
 </style>
+
 {% block content %}
-	<h3 class="text-center lead">Detail Job</h3>
-	<hr>
+<div class="main">
 	<div class="container">
 		<div class="row">
-
-			<h3 class="lead">{{ jobs_detail.name }}</h3>
-			<h3 class="lead text-center">{{ company_info.city }}</h3>
-			<div class="col-sm-10">
-				<p>{{ jobs_detail.get_raw_string | safe }}</p>
-				<p>{{ jobs_detail.welfare }}</p>
-				<p>{{ jobs_detail.skill }}</p>
+		{% if messages %}
+		{% include "alert_messages.html" with messages=messages %}
+		{% endif %}		
+		<div class="col-sm-12">
+			{% if job_update_required %}
+			<h3 class="lead text-center"><a href="{% url 'update_jobs' jobs_detail.pk jobs_detail.slug %}">Edit Here</a></h3>
+			{% endif %}
+			<h3 class="lead"><b>{{ jobs_detail.name }}</b></h3>
+			<p>{{ jobs_detail.company.address | html_inline | safe }} 
+			{% if jobs_detail.company %}
+			<a href="{% url 'detail_companys' jobs_detail.company.pk jobs_detail.company.slug %}">- {{ jobs_detail.company.name | html_inline | safe }}</a>
+			{% endif %}
+			</p>
+			<hr>
 			</div>
-			<div class="col-sm-2 text-right">
+			<div class="col-sm-10">
+				<p class="lead"><b>Description</b>
+					<p>{{ jobs_detail.description | convert_to_html | safe }}</p>
+				</p>
+				<br>
+				<p class="lead"><b>Welfare</b>
+					<p>{{ jobs_detail.welfare | convert_to_html | safe }}</p>
+				</p>
+				<br>
+				<p class="lead"><b>Skill</b>
+					<p>{{ jobs_detail.skill | convert_to_html | safe }}</p>
+				</p>
+				<p class="lead"><b>Wage</b>
+					<p>{{ jobs_detail.wage | convert_to_html | safe }}</p>
+				</p>
+			</div>
+			<div class="col-sm-2 text-center">
 				<p>Job Type</p>
 				<ul class="list-unstyled">
-					<a class="btn btn-theme">
+					<a class="btn btn-theme btn-block">
 						<i class="fa fa-tag"></i>
 						{{ jobs_detail.job_type }}
 					</a>
 				</ul>
+				{% if jobs_detail.wage %}
 				<p>Wage</p>
 				<ul class="list-unstyled">
-					<a class="btn btn-theme">
+					<a class="btn btn-theme btn-block">
 						<i class="fa fa-tag"></i>
 						{{ jobs_detail.wage }}
 					</a>
 				</ul>
+				{% endif %}
+				{% if jobs_detail.exriry_date %}
 				<p>Expiry Date</p>
 				<ul class="list-unstyled">
-					<a class="btn btn-theme">
+					<a class="btn btn-theme btn-block">
 						<i class="fa fa-tag"></i>
 						{{ jobs_detail.exriry_date }}
 					</a>
 				</ul>
+				{% endif %}
 				<p>Apply</p>
 				<ul class="list-unstyled">
-					<a href="{{ jobs_detail.url }}" class="btn btn-theme">
+					<a href="{{ jobs_detail.url }}" class="btn btn-theme btn-block">
 						<i class="fa fa-tag"></i>
-						Apply
+						{{ jobs_detail.get_job_apply_url }}
 					</a>
 				</ul>
 			</div>
 		</div>
 	</div>
+</div>
 {% endblock content %}

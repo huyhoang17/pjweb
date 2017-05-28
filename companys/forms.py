@@ -4,6 +4,7 @@ from .models import CompanyProfile
 
 
 class CompanyCreateForm(forms.ModelForm):
+
     class Meta:
         model = CompanyProfile
         fields = [

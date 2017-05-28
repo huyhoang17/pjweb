@@ -1,30 +1,25 @@
 {% load staticfiles %}
-
 <style>
 {% block style %}
-
+a#email-subcribe {
+	color: #fff;
+}
 {% endblock style %}
 </style>
-
-
-{% block content %}
-<br><hr>
 <div class="jumbotron text-center">
 	<div class="main-text">
 		<form class="form-horizontal col-sm-6 col-sm-offset-3">
 			<h3 style="font-size: 50px;" class="lead text-center">Email Subcribe</h3>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<div class="">
 					<input type="text" name="q" class="form-control text-center" id="inputEmail3" placeholder="Fill in email here">
 				</div>
-			</div>
+			</div> -->
 			<div class="form-group">
-				<div class="">
-					<button type="submit" value="Search" class="btn btn-primary btn-lg">Submit Email</button>
-				</div>
+				<button class="btn btn-primary btn-lg">
+					<a id="email-subcribe" href="{% url 'newsletters' %}">Submit Email Here</a>
+				</button>
 			</div>
 		</form>
 	</div>
-	<br><br>
 </div>
-{% endblock content %}
