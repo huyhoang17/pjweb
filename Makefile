@@ -24,6 +24,6 @@ test:
 	python manage.py test
 
 lint:
-	flake8 --exclude migrations/,env/ .
+	flake8 --exclude manage.py,migrations/,settings/,venv/ .
 
 ci: lint test
