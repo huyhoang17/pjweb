@@ -1,8 +1,5 @@
 import os
 
-from decouple import config
-
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -17,16 +14,16 @@ SECRET_KEY = 'site_secret_key'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'your_email@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Application definition
@@ -69,7 +66,6 @@ ROOT_URLCONF = 'pjweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [],
         'DIRS': [os.path.join(os.path.dirname(
             BASE_DIR), "templates")],
         'APP_DIRS': True,
@@ -86,22 +82,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pjweb.wsgi.application'
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.BACKEND: ''nds.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': '',  # config('DB_PASSWORD'),
-        'HOST': 'localhost',  # config('DB_HOST'),
-        'PORT': '',
+        'NAME': 'database_name',
+        'USER': 'database_user',
+        'PASSWORD': '',  # 'password_user',
+        'HOST': 'localhost',  # '127.0.0.1',
+        'PORT': '',  # '5432',
     }
 }
 
