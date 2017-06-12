@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-{# {% if company_login_required %} #}
 <div class="container">
 <h3 class="lead text-center">Fill in job infomation</h3>
 <h4 class="lead text-center">Company: <b><a href="{% url 'detail_companys' membership.company.pk membership.company.slug %}">{{ membership.company.name }}</a></b></h4>
@@ -10,11 +9,10 @@
 			<form method='POST' action=''>{% csrf_token %}
 				{{ form|crispy }}
 				<div class="lead text-center">
-					<input class='btn btn-primary' type='submit' value='Submit' /> <small>or</small> <a href="{% url 'delete_companys' membership.company.pk membership.company.slug %}"><small>Delete Company Info</small></a>
+					<input class='btn btn-primary' type='submit' value='Submit' /> <small>or</small> <a href="{% url 'delete_companies' membership.company.pk membership.company.slug %}"><small>Delete Company Info</small></a>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-{# {% endif %} #}
 {% endblock content %}
