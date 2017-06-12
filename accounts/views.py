@@ -50,8 +50,9 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
         '''
         Check if user is not admin or not authenticated
         '''
-        user = self.get_object()  # UserProfile
-        if user.user.username != request.user.username and \
+        user_obj = self.get_object()  # UserProfile
+        user = get_auth_user(request)
+        if user.userprofile != user_obj and \
                 not request.user.is_staff:
             raise Http404
         return super().get(request, *args, **kwargs)

@@ -1,7 +1,10 @@
 from django.conf.urls import url
 
 from .views import (
-    AccountListView, AccountDetailView, AccountUpdateView, AccountDeleteView
+    AccountListView,
+    AccountDetailView,
+    AccountUpdateView,
+    AccountDeleteView
 )
 
 urlpatterns = [

@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 from .models import JobsInfo
-# Register your models here.
 
 
 def make_active(modeladmin, request, queryset):
@@ -37,9 +36,6 @@ class JobsInfoAdmin(admin.ModelAdmin):
         "skill",
     ]
     actions = [make_active]
-
-    def company_name(self, instance, *args, **kwargs):
-        return instance.company
 
     class Meta:
         model = JobsInfo

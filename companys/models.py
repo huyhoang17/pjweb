@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import pre_save, post_init
+from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
 from .consts import CITY, SIZE_COMPANY
@@ -24,11 +24,6 @@ class Membership(models.Model):
 
 
 def image_upload_to(instance, filename):
-    '''
-    PARAMS: 2 default params
-        instance: this models
-        filename:
-    '''
     title = instance.name  # company name
     slug = slugify(title)
     basename, file_extension = filename.split(".")
@@ -59,10 +54,12 @@ class CompanyProfile(TimeStamp):
 
     phone_number = models.CharField(blank=True, null=True, max_length=250)
     website = models.CharField(blank=True, null=True, max_length=250)
+
     logo = models.ImageField(upload_to=image_upload_to,
                              null=True,
                              blank=True,
                              help_text="Upload logo for Company")
+
     size = models.CharField(max_length=255,
                             null=True,
                             blank=False,
@@ -95,27 +92,6 @@ def create_slug(instance, new_slug=None):
         new_slug = "%s-%s" % (slug, qs.first().id)
         return create_slug(instance, new_slug=new_slug)
     return slug
-
-
-def create_slug_company_none(sender, instance, *args, **kwargs):
-    '''
-    for test data
-    create slug if slug field is empty string: ''
-    '''
-    if not instance.slug:
-        instance.slug = create_slug(instance)
-    # if not instance.description:
-    #     instance.description = """
-    #     Lorem ipsum dolor sit amet, consectetur adipisicing elit. \
-    #     Necessitatibus corrupti accusantium odio iusto expedita explicabo \
-    #     temporibus autem cupiditate dolores molestiae nam eligendi velit, \
-    #     sit quod eius facere labore adipisci excepturi porro? Recusandae \
-    #     dignissimos laboriosam culpa distinctio dolorem libero, maxime nobis.
-    #     """
-    # instance.save()
-
-
-post_init.connect(create_slug_company_none, sender=CompanyProfile)
 
 
 def pre_save_company_receiver(sender, instance, *args, **kwargs):

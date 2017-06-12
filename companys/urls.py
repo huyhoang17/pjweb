@@ -1,6 +1,4 @@
 from django.conf.urls import url
-# from django.contrib import admin
-
 
 from .views import (
     CompanyListView,
@@ -18,5 +16,5 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/(?P<slug>[\w.@+-]+)/edit/$',
         CompanyUpdateView.as_view(), name='update_companies'),
     url(r'^(?P<pk>\d+)/(?P<slug>[\w.@+-]+)/delete/$',
-        CompanyDeleteView.as_view(), name='delete_companys'),
+        CompanyDeleteView.as_view(), name='delete_companies'),
 ]

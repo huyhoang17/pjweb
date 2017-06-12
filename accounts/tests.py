@@ -3,8 +3,6 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 
-# from .models import UserProfile
-
 
 class UserProfileTestCase(TestCase):
 
@@ -19,7 +17,7 @@ class UserProfileTestCase(TestCase):
 
     def test_list_account_response(self):
         response = self.client.get(reverse('accounts'))
-        # redirect: login required
+        # login required
         self.assertEqual(response.status_code, 302)
         self.client.login(username='test_user', password='test_password')
         response = self.client.get(reverse('accounts'))

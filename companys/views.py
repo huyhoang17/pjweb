@@ -17,31 +17,14 @@ from accounts.views import get_auth_user
 from job.models import JobsInfo
 
 
-class CompanyListView(ListView):
+class CompanyListView(LoginRequiredMixin, ListView):
     model = CompanyProfile
     queryset = CompanyProfile.objects.all()
     context_object_name = "companys_list"
     paginate_by = 10
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
 
-    def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset(*args, **kwargs)
-        # query = self.request.GET.get("q")
-        # if query:
-        #     qs = self.model.objects.filter(
-        #         Q(name__icontains=query) |
-        #         # Q(company_set__icontains=query) |
-        #         Q(description__icontains=query) |
-        #         Q(experience__icontains=query)
-        #     )
-
-        return qs
-
-
-class CompanyDetailView(DetailView):
+class CompanyDetailView(LoginRequiredMixin, DetailView):
     model = CompanyProfile
     context_object_name = "companys_detail"
 
@@ -58,7 +41,8 @@ class CompanyDetailView(DetailView):
         except Membership.DoesNotExist:
             pass
         company = self.get_object()
-        jobs_company = JobsInfo.objects.filter(company=company)
+        jobs_company = JobsInfo.objects.filter(
+            company=company).filter(active=True)
         context["jobs_company"] = jobs_company
         return context
 

@@ -9,6 +9,8 @@ from companys.models import CompanyProfile
 
 
 class JobsDetailRank(models.Model):
+    '''TODO
+    '''
     # upvoted
     # job_saved
     pass

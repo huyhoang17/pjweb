@@ -1,11 +1,11 @@
 from django.core.management.base import BaseCommand
 from django.db import DataError
 
-from job.models import JobsInfo
-
 import glob
-import logging
 import json
+import logging
+
+from job.models import JobsInfo
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,6 @@ class Command(BaseCommand):
     def __init__(self):
         super().__init__()
         self.path_file_suffix = "/*.json"
-        # self.unknown = "unknown"
 
     def read_json_file_data(self, path_file):
         with open(path_file) as f:
@@ -37,18 +36,8 @@ class Command(BaseCommand):
             for job in jobs:
                 name = job.get('name', unknown)
                 try:
-                    # company = CompanyProfile.objects.create(
-                    #     name=job.get('company', unknown),
-                    #     address=job.get('address', unknown),
-                    #     city=job.get('province', 'Ha Noi'),
-                    #     size=job.get('size', unknown)
-                    # )
-                    # company.membership_set.create(account=user_admin)
-                    # company.save()
-
                     job_item = JobsInfo.objects.create(
                         name=name,
-                        # company=company,
                         description=job.get('work', unknown),
                         url=job.get('url', unknown),
                         experience=job.get('specialize', unknown),
@@ -58,7 +47,7 @@ class Command(BaseCommand):
                     )
                     job_item.save()
                 except DataError as e:
-                    logger.debug("{}: {}".format(path_file.split("/")[-1]), e)
+                    logger.error("{}: {}".format(path_file.split("/")[-1]), e)
 
                 self.stdout.write(
                     self.style.SUCCESS(

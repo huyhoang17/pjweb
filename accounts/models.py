@@ -31,7 +31,6 @@ def image_upload_to(instance, filename):
 class UserProfile(TimeStamp):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
-    # company = models.ForeignKey(CompanyProfile, blank=True, null=True)
     slug = models.SlugField(blank=True, max_length=255)
     sex = models.CharField(blank=True,
                            null=True,
@@ -53,19 +52,23 @@ class UserProfile(TimeStamp):
             Up to 15 digits allowed.
         """
     )
-    skill = models.TextField(blank=True, null=True, max_length=250)
+    skill = models.TextField(blank=True, null=True, max_length=255)
+
     phone_number = models.CharField(max_length=20,
                                     validators=[phone_regex],
                                     blank=True,
                                     null=True)
+
     avatar = models.ImageField(upload_to=image_upload_to,
                                null=True,
                                blank=True,
                                help_text="Upload Your Avatar")
+
     cv_user = models.FileField(upload_to=image_upload_to,
                                null=True,
                                blank=True,
                                help_text="Upload Your CV")
+
     url = models.URLField(blank=True, null=True, max_length=255)
 
     def __str__(self):

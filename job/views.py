@@ -27,6 +27,7 @@ class JobListView(ListView):
     paginate_by = 10
 
     def get_queryset(self, *args, **kwargs):
+        # TODO
         # iteritem = self.request.GET.lists()
         # for k, v in iteritem:
         #     print(k, v)
@@ -34,7 +35,7 @@ class JobListView(ListView):
         query = self.request.GET.get("q")
         if query:
             query = query.strip()
-            qs = self.model.objects.filter(
+            qs = self.model.objects.all().filter(
                 Q(name__icontains=query) |
                 Q(description__icontains=query) |
                 Q(experience__icontains=query)
