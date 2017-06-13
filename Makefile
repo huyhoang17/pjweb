@@ -1,6 +1,8 @@
-migrate:
-	python manage.py makemigrations accounts companys job newletters
+migrate: migrations
 	python manage.py migrate
+
+migrations:
+	python manage.py makemigrations accounts companys job newletters
 
 run:
 	python manage.py runserver
@@ -20,7 +22,7 @@ service:
 shell:
 	python manage.py shell -i ipython
 
-test:
+test: migrations
 	python manage.py test --verbosity 3
 
 lint:
