@@ -1,7 +1,17 @@
-machine:
-  python:
-    version: 3.5.2
-
-test:
-  override:
-    - make ci
+version: 2
+jobs:
+  build:
+    working_directory: ~/circulate
+    docker:
+      - image: python:3.5.2
+        environment:
+          POSTGRES_USER: ubuntu
+      - image: postgres:9.6.2
+        environment:
+          POSTGRES_USER: ubuntu
+          POSTGRES_DB: pjweb
+          POSTGRES_PASSWORD: ""
+    steps:
+      - checkout
+      - run: pip install -r requirements.txt
+      - run: make ci
