@@ -4,6 +4,14 @@
 
 Python jobs website
 
+
+# Development
+
+- Create a Postgresql DB named `pjweb`
+- Run `make migrate`
+- Python 3 only
+- Comply to PEP8
+
 ---
 
 ## Change Log
