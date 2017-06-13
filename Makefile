@@ -21,7 +21,7 @@ shell:
 	python manage.py shell -i ipython
 
 test:
-	python manage.py test
+	python manage.py test --verbosity 3
 
 lint:
 	flake8 --exclude manage.py,migrations/,settings/,venv/,env/ .
