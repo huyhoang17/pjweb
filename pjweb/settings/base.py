@@ -85,9 +85,8 @@ WSGI_APPLICATION = 'pjweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'database_name',
-        'USER': 'database_user',
-        'PASSWORD': '',  # 'password_user',
+        'NAME': 'pjweb',
+        'USER': os.environ.get('POSTGRES_USER', ''),
         'HOST': 'localhost',  # '127.0.0.1',
         'PORT': '',  # '5432',
     }
