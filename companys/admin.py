@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from .models import CompanyProfile, Membership
 from job.models import JobsInfo
-# Register your models here.
 
 
 class MembershipInline(admin.StackedInline):
@@ -19,6 +18,7 @@ class JobsInfoInline(admin.StackedInline):
 
 class MembershipAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'id']
+    list_per_page = 200
 
 
 class CompanyProfileAdmin(admin.ModelAdmin):

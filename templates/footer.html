@@ -1,35 +1,40 @@
 <!-- main-footer -->
-
 <style>
 {% block style %}
-  .main-footer {
-    padding: 15px;
-    margin-bottom: 10px;
+  footer.main-footer {
+  padding: 0px;
+  margin-bottom: 10px;
   }
+  .footer-text ul {
+  list-style-type: none;
+  margin: 0 auto;
+}
+
+.footer-text ul li {
+  font-size: 15px;
+  display: inline;
+  margin: 0px 25px;
+}
+.footer-text ul li i {
+  margin: 0px 5px;
+}
 {% endblock style %}
 </style>
 
-
-
-<footer class="main-footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-6">
-        <ul class="list-inline link-footer text-center-xs">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="col-sm-6 ">
-        <p class="text-center-xs hidden-lg hidden-md hidden-sm">Stay Connected</p>
-        <div class="socials text-right text-center-xs">
-          <a href="#" target="_blank"><i class="fa fa-github"></i></a>
-          <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
-          <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
-        </div>
-      </div>
-    </div>
+<hr>
+<div class="container">
+<footer class="main-footer page-footer">
+  <div class="footer-text">
+    <p class="lead text-center"><small>Contact Us</small></p>
+    <ul class="lead text-center">
+    <li><i class="fa fa-phone" aria-hidden="true"></i>
+      098 209 02 90</li>
+      <li><i class="fa fa-map-marker" aria-hidden="true"></i>
+      SGarden coworking space, số 19, ngõ 376, Khương Đình, Hà Nội</li>
+      <li><i class="fa fa-envelope" aria-hidden="true"></i>
+      info@pymi.vn</li>
+    </ul>
   </div>
-  </footer><!-- end main-footer -->
+  <br><br>
+</footer><!-- end main-footer -->
+</div>

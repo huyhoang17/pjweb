@@ -1,11 +1,9 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 
 from .models import Membership
-from accounts.models import UserProfile
 
 
 class CompanyRequiredMixin(object):
@@ -15,13 +13,12 @@ class CompanyRequiredMixin(object):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        request.session['company_info_required'] = True
         username = request.user.username
         user = User.objects.get(username=username)
-        user_acc = UserProfile.objects.get(user=user)
         try:
-            member = Membership.objects.filter(account=user_acc)
-            if member.count() == 0:
-                return redirect('/companies/create/')
+            if not Membership.objects.filter(account__user=user).exists():
+                return redirect("create_companies")
         except AttributeError:
             return render(self.request, self.template_name)
         return super().dispatch(request, *args, **kwargs)

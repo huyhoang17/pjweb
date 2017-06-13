@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
 {% block content %}
-<form action="" method="POST">{% csrf_token %}
-    <p class="lead">Are you sure you want to delete your account: "{{ object.user.username }}"?</p>
-    <input class="btn btn-danger" type="submit" value="Confirm" />
-    <a class="btn btn-default" href="{{ object.get_absolute_url }}">Cancel</a>
-</form>
+<div class="container">
+	<h3 class="lead text-center">Delete Account</h3>
+	<form action="" method="POST">{% csrf_token %}
+		<p class="lead">Are you sure you want to delete your account: "{{ object.user.username }}"?</p>
+		<input class="btn btn-danger" type="submit" value="Confirm" />
+		<a class="btn btn-default" href="{{ object.get_absolute_url }}">Cancel</a>
+	</form>
+</div>
 {% endblock content %}

@@ -1,11 +1,10 @@
-from django.conf import settings
-from django.conf.urls import include, url
-from django.conf.urls.static import static
-# from django.contrib import admin
-
+from django.conf.urls import url
 
 from .views import (
-    AccountListView, AccountDetailView, AccountUpdateView, AccountDeleteView
+    AccountListView,
+    AccountDetailView,
+    AccountUpdateView,
+    AccountDeleteView
 )
 
 urlpatterns = [

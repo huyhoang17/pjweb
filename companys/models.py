@@ -1,11 +1,10 @@
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import pre_save, post_init
+from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
-from .consts import SIZE_COMPANY, CITY
+from .consts import CITY, SIZE_COMPANY
 from accounts.models import UserProfile
-# Create your models here.
 
 
 class TimeStamp(models.Model):
@@ -17,7 +16,7 @@ class TimeStamp(models.Model):
 
 
 class Membership(models.Model):
-    account = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    account = models.ForeignKey(UserProfile)
     company = models.ForeignKey('CompanyProfile', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -25,11 +24,6 @@ class Membership(models.Model):
 
 
 def image_upload_to(instance, filename):
-    '''
-    PARAMS: 2 default params
-        instance: this models
-        filename:
-    '''
     title = instance.name  # company name
     slug = slugify(title)
     basename, file_extension = filename.split(".")
@@ -41,34 +35,37 @@ class CompanyProfile(TimeStamp):
     member = models.ManyToManyField(UserProfile,
                                     through='Membership',
                                     blank=True)
-    name = models.CharField(blank=False,
-                            null=True,
-                            max_length=50,
-                            default='abc')
-    slug = models.SlugField(blank=True)
+    name = models.CharField(blank=True,
+                            max_length=255,
+                            default='company-profile')
+    slug = models.SlugField(blank=True, max_length=255)
     description = models.TextField(blank=True, null=True, max_length=1000)
-    address = models.CharField(blank=True, null=True, max_length=50)
+    address = models.CharField(blank=True, null=True, max_length=255)
 
     city = models.CharField(blank=True,
                             null=True,
-                            max_length=50,
+                            max_length=255,
+                            choices=CITY,
                             default="Ha Noi")
     country = models.CharField(blank=True,
                                null=True,
-                               max_length=50,
+                               max_length=255,
                                default='Viet Nam')
 
     phone_number = models.CharField(blank=True, null=True, max_length=250)
     website = models.CharField(blank=True, null=True, max_length=250)
+
     logo = models.ImageField(upload_to=image_upload_to,
                              null=True,
                              blank=True,
                              help_text="Upload logo for Company")
-    size = models.CharField(max_length=120,
-                            null=True,
-                            blank=True)
 
-    email_contact = models.EmailField(max_length=220,
+    size = models.CharField(max_length=255,
+                            null=True,
+                            blank=False,
+                            choices=SIZE_COMPANY)
+
+    email_contact = models.EmailField(max_length=255,
                                       null=True,
                                       blank=True)
 
@@ -95,18 +92,6 @@ def create_slug(instance, new_slug=None):
         new_slug = "%s-%s" % (slug, qs.first().id)
         return create_slug(instance, new_slug=new_slug)
     return slug
-
-
-def create_slug_company_none(sender, instance, *args, **kwargs):
-    '''
-    for test data
-    create slug if slug field is empty string: ''
-    '''
-    if not instance.slug:
-        instance.slug = create_slug(instance)
-
-
-post_init.connect(create_slug_company_none, sender=CompanyProfile)
 
 
 def pre_save_company_receiver(sender, instance, *args, **kwargs):

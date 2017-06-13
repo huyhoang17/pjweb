@@ -2,27 +2,34 @@
 {% load crispy_forms_tags %}
 <style>
 {% block style %}
-
+.main {
+	margin-top:100px;
+}
 {% endblock style %}
 </style>
-
 {% block header %}
 {% endblock header %}
-
-{% if message %}
-<h3 class="lead text-center">{{ message }}</h3>
-{% endif %}
-
 {% block content %}
-<h3 class="lead text-center">Subcribe Newsletter</h3>
-	<div class='row'>
-		<div class='col-sm-8 col-sm-offset-2'>
-			<form method='POST' action=''>{% csrf_token %}
-				{{ form|crispy }}
-				<div class="submit text-center">
-				<input class='btn btn-primary' type='submit' value='Submit' />
+	<div class="main container">
+		{% if email_subcribed %}
+			<h3 class="lead text-center">Email Subcribed</h3>
+		{% else %}
+			{% if not confirm_message %}
+				<h3 class="lead text-center">Subcribe Newsletter</h3>
+				<div class='row'>
+					<div class='col-sm-6 col-sm-offset-3'>
+						<form method='POST' action=''>{% csrf_token %}
+							{{ form|crispy }}
+							<div class="submit text-center">
+								<input class='btn btn-info' type='submit' value='Submit' />
+							</div>
+						</form>
+					</div>
 				</div>
-			</form>
-		</div>
+			{% else %}
+				<h3 class="lead text-center">{{ confirm_message }}</h3>
+			{% endif %}
+		{% endif %}
+		
 	</div>
 {% endblock content %}

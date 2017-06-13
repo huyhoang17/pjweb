@@ -2,9 +2,12 @@
 
 <style>
 {% block style %}
+.main {
+	margin-top: 100px;
+}
 .img-responsive {
 	border-radius: 50%;
-	border: 2px solid #555;
+/*	border: 2px solid #555;*/
 }
 {% endblock style %}
 </style>
@@ -12,18 +15,23 @@
 {% block header %}
 {% endblock header %}
 {% block content %}
-<h3>Account Detail</h3>
-<br>
 {% if request.user.is_authenticated %}
-	<div class="container">
+	<div class="main container">
 		<div class="row">
+			{% if messages %}
+			{% include "alert_messages.html" with messages=messages %}
+			{% endif %}	
 			<div class="col-sm-8">
-				<div class="col-sm-4  text-center">
+				<div class="col-sm-4 text-center">
 					<a class="lead" href="{{ accounts_detail.get_absolute_url }}">{{ accounts_detail.user.username }}</a>
 					<br><br>
-					<img class="img-responsive" src="http://127.0.0.1:8000/media/user/testuser25/testuser25-None.jpg" alt="">
+					{% if accounts_detail.avatar %}
+					<img class="img-responsive" src="{{ accounts_detail.avatar.url }}" alt="">
+					{% endif %}
 					<br>
-					<a href="{{ accounts_detail.cv_user }}"><button class="btn btn-info btn-sm">View CV</button></a>
+					{% if accounts_detail.cv_user %}
+					<a href="{{ accounts_detail.cv_user.url }}"><button class="btn btn-info btn-sm">View CV</button></a>
+					{% endif %}
 				</div>
 				<div class="col-sm-8">
 					<p><b>Location</b>: {{ accounts_detail.location }}</p>
@@ -36,7 +44,6 @@
 				<hr>
 			</div>
 			<div class="row col-sm-4">
-				<h3>Authenticated</h3>
 			</div>
 		</div>
 	</div>

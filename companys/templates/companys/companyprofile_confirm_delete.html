@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+	<h3 class="lead text-center">Delete Company Info</h3>
+	<form action="" method="POST">{% csrf_token %}
+		<p class="lead">Are you sure you want to delete?</p>
+		<input class="btn btn-danger" type="submit" value="Confirm" />
+		<a class="btn btn-default" href="{{ object.get_absolute_url }}">Cancel</a>
+	</form>
+</div>
+{% endblock content %}

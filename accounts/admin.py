@@ -1,41 +1,8 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
 
 from .models import UserProfile
 from companys.models import Membership
 from job.models import JobsInfo
-# Register your models here.
-
-
-# class UserProfileInline(admin.TabularInline):
-#     model = User
-#     extra = 0
-#     max_num = 10
-
-
-# class UserProfileAdmin(admin.ModelAdmin):
-#     list_display = ['__str__', 'id', 'bio', 'location', 'birth_date']
-#     inlines = [
-#         UserProfileInline,
-#     ]
-
-#     class Meta:
-#         model = UserProfile
-
-
-# admin.site.register(UserProfile, UserProfileAdmin)
-
-
-# admin.site.unregister(User)
-
-
-# class UserProfileInline(admin.StackedInline):
-#     model = UserProfile
-
-
-# class UserProfileAdmin(UserAdmin):
-#     inlines = [UserProfileInline, ]
 
 
 class MembershipInline(admin.StackedInline):
@@ -53,7 +20,7 @@ class JobsInfoInline(admin.StackedInline):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = [
         '__str__',
-        # 'location'
+        'pk',
         'created',
         'updated',
     ]
@@ -62,10 +29,8 @@ class UserProfileAdmin(admin.ModelAdmin):
         "created",
         "updated"
     )
-    # inlines = [MembershipInline, JobsInfoInline, ]
     search_fields = ['__str__', 'bio', 'location', 'skill', 'phone_number']
     readonly_fields = ["created", "updated"]
 
 
-# admin.site.register(User, UserProfileAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
