@@ -29,7 +29,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         "created",
         "updated"
     )
-    search_fields = ['__str__', 'bio', 'location', 'skill', 'phone_number']
+    search_fields = ['bio', 'location', 'skill', 'phone_number']
     readonly_fields = ["created", "updated"]
 
 

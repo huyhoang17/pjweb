@@ -30,7 +30,6 @@ class JobsInfoAdmin(admin.ModelAdmin):
     readonly_fields = ["created", "updated"]
     search_fields = [
         "name",
-        "company",
         "description",
         "job_type",
         "skill",
