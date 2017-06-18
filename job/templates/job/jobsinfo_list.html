@@ -34,7 +34,7 @@
 				</div>
 			</div>
 		</form>
-		<div class="row col-sm-8">
+		<div class="row col-sm-10 col-sm-offset-1">
 			{% for job in jobs_list %}
 				<div id="item">
 					<div class="row">
@@ -48,9 +48,6 @@
 				</div>
 				<hr>
 			{% endfor %}
-		</div>
-		<div class="row col-sm-4">
-			<!-- #TODO: add filter by jobs-type, location, skill -->
 		</div>
 	</div>
 	{% include "pagination.html" %}

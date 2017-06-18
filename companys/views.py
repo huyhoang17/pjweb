@@ -39,6 +39,8 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
             )
             context["company_update_required"] = True
         except Membership.DoesNotExist:
+            if user_acc.user.is_staff:
+                context["company_update_required"] = True
             pass
         company = self.get_object()
         jobs_company = JobsInfo.objects.filter(

@@ -34,11 +34,26 @@
 					{% endif %}
 				</div>
 				<div class="col-sm-8">
+				
+					<p><b>Sex</b>: {% if accounts_detail.sex == 'M' %} 
+						Male
+					{% elif accounts_detail.sex == 'F' %}
+						Female
+					{% else %}
+						---
+					{% endif %}
+					</p>
 					<p><b>Location</b>: {{ accounts_detail.location }}</p>
-					<p><b>Bio</b>: {{ accounts_detail.bio }}</p>
+					<p><b>Bio</b>: {{ accounts_detail.bio |truncatewords:50 }}</p>
 					<p><b>Birth Date</b>: {{ accounts_detail.birth_date }}</p>
 					<p><b>Phone Number</b>: {{ accounts_detail.phone_number }}</p>
 					<p><b>Skills</b>: {{ accounts_detail.skill }}</p>
+					<p><b>Url</b>: {% if accounts_detail.url %}
+					<a href="{{ accounts_detail.url }}">{{ accounts_detail.url }}</a>
+					{% else %}
+					---
+					{% endif %}
+					</p>
 					
 				</div>
 				<hr>
